@@ -272,7 +272,7 @@ function App() {
           >
             <source
               src={
-                bgSelected !== "undefined"
+                bgSelected
                   ? bgSelected
                   : "https://storage.googleapis.com/my-image-products/attack.webm"
               }
