@@ -56,9 +56,28 @@ function App() {
     setIsUrlValid(false);
   };
 
+  const getCurrentSocketTime = () => {
+    const currentDate = new Date();
+
+    let hours = currentDate.getHours();
+    let minutes = currentDate.getMinutes();
+    const meridiem = hours >= 12 ? "PM" : "AM";
+
+    hours = hours % 12 || 12;
+
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+
+    const socketTime = `${hours}:${minutes} ${meridiem}`;
+    return socketTime;
+  };
+
   const sendMessage = (e) => {
     if (e.keyCode === 13 && messageChat.trim()) {
-      socket.emit("send_message", { messageChat, userName });
+      socket.emit("send_message", {
+        messageChat,
+        userName,
+        timeChat: getCurrentSocketTime(),
+      });
       setMessageChat("");
     }
   };
@@ -543,18 +562,27 @@ function App() {
                   </Tooltip>
                 </div>
                 <div className="relative h-[480px] max-h-[480px]">
-                  <div className="max-h-full overflow-auto">
+                  <div className="max-h-full overflow-y-auto overflow-x-hidden">
                     {messages.map((mess, index) => {
                       return (
-                        <div key={index} className="flex gap-2 max-w-fit">
-                          <h1 className="text-zinc-300">{mess.userName}:</h1>
-                          <div className="flex-shrink break-all">
-                            <h1 className="text-white">{mess.messageChat}</h1>
+                        <div key={index} className="flex gap-2 w-full">
+                          <div className="whitespace-nowrap flex gap-2">
+                            <p className="text-zinc-300 text-sm">
+                              {mess.timeChat}
+                            </p>
+                            <h1 className="text-zinc-300 text-sm">
+                              {mess.userName}:
+                            </h1>
                           </div>
+                          {/* <div className="flex-shrink break-all"> */}
+                          <span className="text-white text-sm break-all">
+                            {mess.messageChat}
+                          </span>
+                          {/* </div> */}
                         </div>
                       );
                     })}{" "}
-                    <div ref={messagesEndRef} />
+                    <div ref={messagesEndRef} className="mt-2" />
                   </div>
                   <div className="absolute -bottom-10 w-full pr-4">
                     <input
