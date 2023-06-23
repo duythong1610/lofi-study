@@ -8,4 +8,12 @@ export default defineConfig({
     port: 3000,
     open: true,
   },
+  proxy: {
+    "/socket.io": {
+      target: "https://socket-server-2cuv.onrender.com",
+      changeOrigin: true,
+      secure: false,
+      ws: true,
+    },
+  },
 });
