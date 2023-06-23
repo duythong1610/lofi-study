@@ -57,7 +57,7 @@ function App() {
   };
 
   const sendMessage = (e) => {
-    if (e.keyCode === 13) {
+    if (e.keyCode === 13 && messageChat.trim()) {
       socket.emit("send_message", { messageChat, userName });
       setMessageChat("");
     }
@@ -478,7 +478,7 @@ function App() {
                 className={
                   hiddenYoutube
                     ? "hidden"
-                    : "px-4 py-4 absolute flex flex-col gap-4 top-0 bottom-0 left-[152px] m-auto rounded-xl bg-black/10 max-h-[400px] backdrop-blur-sm z-20 cursor-move"
+                    : "px-4 py-4 absolute flex flex-col gap-4 top-0 bottom-0 left-[152px] m-auto rounded-xl bg-black/30 max-h-[400px] backdrop-blur-sm z-20 cursor-move"
                 }
               >
                 <div className="flex justify-between items-center">
@@ -531,41 +531,46 @@ function App() {
           )}
 
           {toggleChat && isUser && (
-            <div className="pl-4 py-4 absolute flex w-[500px] flex-col gap-4 top-0 bottom-0 left-[152px] m-auto rounded-xl bg-black/10 max-h-[600px] backdrop-blur-sm z-20">
-              <div className="flex justify-between items-center">
-                <h1 className="text-white font-semibold">Chat Channel</h1>
-                <Tooltip title="Hide">
-                  <CloseCircleOutlined
-                    className="pr-4 text-white text-xl cursor-pointer"
-                    onClick={() => setToggleChat(!toggleChat)}
-                  />
-                </Tooltip>
-              </div>
-              <div className="relative h-[480px] max-h-[480px]">
-                <div className="max-h-full overflow-auto">
-                  {messages.map((mess) => {
-                    return (
-                      <h1 className="text-white">
-                        {mess.userName}: {mess.messageChat}
-                      </h1>
-                    );
-                  })}{" "}
-                  <div ref={messagesEndRef} />
+            <Draggable scale={1}>
+              <div className="pl-4 py-4 absolute flex w-[400px] flex-col gap-4 top-0 bottom-0 left-[152px] m-auto rounded-xl bg-black/50 max-h-[600px] backdrop-blur-sm z-20 cursor-move">
+                <div className="flex justify-between items-center">
+                  <h1 className="text-white font-semibold">Chat Channel</h1>
+                  <Tooltip title="Close">
+                    <CloseCircleOutlined
+                      className="pr-4 text-white text-xl cursor-pointer"
+                      onClick={() => setToggleChat(!toggleChat)}
+                    />
+                  </Tooltip>
                 </div>
-                <div className="absolute -bottom-10 w-full pr-4">
-                  <input
-                    placeholder="Enter chat content here...."
-                    className="w-full outline-none rounded-2xl px-4 py-1"
-                    value={messageChat}
-                    type="text"
-                    name=""
-                    id=""
-                    onChange={(e) => setMessageChat(e.target.value)}
-                    onKeyDown={sendMessage}
-                  />
+                <div className="relative h-[480px] max-h-[480px]">
+                  <div className="max-h-full overflow-auto">
+                    {messages.map((mess, index) => {
+                      return (
+                        <div key={index} className="flex gap-2 max-w-fit">
+                          <h1 className="text-zinc-300">{mess.userName}:</h1>
+                          <div className="flex-shrink break-all">
+                            <h1 className="text-white">{mess.messageChat}</h1>
+                          </div>
+                        </div>
+                      );
+                    })}{" "}
+                    <div ref={messagesEndRef} />
+                  </div>
+                  <div className="absolute -bottom-10 w-full pr-4">
+                    <input
+                      placeholder="Enter chat content here...."
+                      className="w-full outline-none py-1 bg-transparent text-white border-b-2"
+                      value={messageChat}
+                      type="text"
+                      name=""
+                      id=""
+                      onChange={(e) => setMessageChat(e.target.value)}
+                      onKeyDown={sendMessage}
+                    />
+                  </div>
                 </div>
               </div>
-            </div>
+            </Draggable>
           )}
 
           <Modal
@@ -576,7 +581,7 @@ function App() {
           >
             <div className="mt-5">
               <input
-                className="w-full outline-none rounded-2xl px-4 py-1"
+                className="w-full outline-none py-1 bg-transparent text-white border-b-2"
                 placeholder="Enter your name to display in chat channel..."
                 type="text"
                 onChange={(e) => setUsername(e.target.value)}
