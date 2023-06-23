@@ -15,7 +15,7 @@ import {
 import { FloatButton, Modal, Tooltip } from "antd";
 import { Slider } from "antd";
 import { io } from "socket.io-client";
-const socket = io.connect("http://localhost:3001");
+const socket = io.connect("https://socket-server-two.vercel.app");
 
 function App() {
   const [bgItem, setBgItem] = useState("");
