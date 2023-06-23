@@ -10,23 +10,33 @@ import {
   SlidersOutlined,
   YoutubeOutlined,
   LineOutlined,
+  CommentOutlined,
 } from "@ant-design/icons";
-import { FloatButton, Tooltip } from "antd";
+import { FloatButton, Modal, Tooltip } from "antd";
 import { Slider } from "antd";
+import { io } from "socket.io-client";
+const socket = io.connect("http://localhost:3001");
 
 function App() {
   const [bgItem, setBgItem] = useState("");
 
+  const [messageChat, setMessageChat] = useState("");
+  const [messages, setMessages] = useState([]);
   const [valueInput, setValueInput] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [bgSelected, setBgSelected] = useState(localStorage.getItem("bg"));
   const [isPlaying, setIsPlaying] = useState(false);
   const [isUrlValid, setIsUrlValid] = useState(false);
   const audioRef = useRef(null);
+  const messagesEndRef = useRef(null);
 
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUser, setIsUser] = useState(false);
+  const [userName, setUsername] = useState("");
   const [toggleScreen, setToggleScreen] = useState(false);
   const [toggleMixer, setToggleMixer] = useState(false);
   const [toggleYoutube, setToggleYoutube] = useState(false);
+  const [toggleChat, setToggleChat] = useState(false);
   const [hiddenYoutube, setHiddenYoutube] = useState(false);
 
   const handleAudio = () => {
@@ -46,9 +56,49 @@ function App() {
     setIsUrlValid(false);
   };
 
+  const sendMessage = (e) => {
+    if (e.keyCode === 13) {
+      socket.emit("send_message", { messageChat, userName });
+      setMessageChat("");
+    }
+  };
+
+  useEffect(() => {
+    const handleUserChat = (message) => {
+      setMessages((prevMessages) => [...prevMessages, message]);
+    };
+
+    socket.on("user-chat", handleUserChat);
+
+    return () => {
+      socket.off("user-chat", handleUserChat);
+    };
+  }, []);
+
+  console.log(messages);
+
   const changeVolume = (event) => {
     audioRef.current.volume = event.target.value;
     localStorage.setItem("volume", event.target.value);
+  };
+
+  const handleSubmit = (e) => {
+    if (e.keyCode === 13) {
+      if (userName) {
+        setIsUser(true);
+        setIsModalOpen(false);
+      } else {
+        setIsUser(false);
+      }
+    }
+  };
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
   const currentVolume = localStorage.getItem("volume");
@@ -245,20 +295,20 @@ function App() {
   });
 
   const currentTime = new Date();
+  console.log(currentTime);
 
-  const currentHour = currentTime.getHours();
+  const currentHour = currentTime.getHours({ hour12: false });
   let greeting;
+  console.log(currentHour);
 
-  if (currentHour < 12) {
-    greeting = "Good Morning!";
-  } else if (currentHour < 18) {
-    greeting = "Good Afternoon!";
-  } else {
+  if (currentHour < 6 || currentHour > 18) {
     greeting = "Good Evening!";
+  } else if (currentHour > 6 && currentHour < 12) {
+    greeting = "Good Morning!";
+  } else if (currentHour > 12 < 18) {
+    greeting = "Good Afternoon!";
   }
 
-  console.log(bgItem);
-  console.log(bgSelected);
   return (
     <>
       <div className="relative h-screen max-h-screen overflow-hidden">
@@ -292,7 +342,7 @@ function App() {
           <div className="!cursor-move w-[500px] inline-block absolute top-0 left-0 overflow-hidden">
             <div className="mb-10">
               <h1 className="text-white font-medium text-2xl neonText">
-                {greeting}!
+                {greeting}
               </h1>
               <h1 className="text-white font-medium text-xl neonText">
                 It's {currentTimeUS}
@@ -307,10 +357,9 @@ function App() {
         <div>
           <FloatButton.Group
             style={{
-              top: "30%",
               left: 84,
             }}
-            className="bg-black/10 backdrop-blur-md flex flex-col bottom-[30%] justify-around rounded-2xl p-2 w-fit "
+            className="bg-black/10 backdrop-blur-md flex flex-col justify-around rounded-2xl p-2 w-fit h-fit top-1/2 -translate-x-[50%] -translate-y-[50%]"
           >
             <Tooltip placement="right" title="Mixed">
               <FloatButton
@@ -334,6 +383,18 @@ function App() {
               <FloatButton
                 icon={<YoutubeOutlined />}
                 onClick={() => handleToggleYoutube()}
+              />
+            </Tooltip>
+
+            <Tooltip placement="right" title="Chat">
+              <FloatButton
+                icon={<CommentOutlined />}
+                onClick={() => {
+                  setToggleChat(!toggleChat);
+                  if (!userName) {
+                    setIsModalOpen(true);
+                  }
+                }}
               />
             </Tooltip>
             <Tooltip placement="right" title="Full screen">
@@ -385,7 +446,7 @@ function App() {
           {toggleMixer && (
             <div className="pl-4 py-4 absolute flex flex-col gap-4 top-0 bottom-0 left-[152px] m-auto rounded-xl bg-black/10 max-h-[600px] backdrop-blur-sm z-20">
               <div className="flex justify-between items-center">
-                <h1 className="text-white font-semibold">Mixed</h1>
+                <h1 className="text-white font-semibold">Mixer</h1>
                 <Tooltip title="Hide">
                   <CloseCircleOutlined
                     className="pr-4 text-white text-xl cursor-pointer"
@@ -440,7 +501,7 @@ function App() {
                     </Tooltip>
                   </div>
                 </div>
-                <div className="list flex flex-col gap-4 w-[600px] h-full overflow-auto">
+                <div className="list flex flex-col gap-4 w-[600px] h-full">
                   <input
                     type="text"
                     value={valueInput}
@@ -468,6 +529,61 @@ function App() {
               </div>
             </Draggable>
           )}
+
+          {toggleChat && isUser && (
+            <div className="pl-4 py-4 absolute flex w-[500px] flex-col gap-4 top-0 bottom-0 left-[152px] m-auto rounded-xl bg-black/10 max-h-[600px] backdrop-blur-sm z-20">
+              <div className="flex justify-between items-center">
+                <h1 className="text-white font-semibold">Chat Channel</h1>
+                <Tooltip title="Hide">
+                  <CloseCircleOutlined
+                    className="pr-4 text-white text-xl cursor-pointer"
+                    onClick={() => setToggleChat(!toggleChat)}
+                  />
+                </Tooltip>
+              </div>
+              <div className="relative h-[480px] max-h-[480px]">
+                <div className="max-h-full overflow-auto">
+                  {messages.map((mess) => {
+                    return (
+                      <h1 className="text-white">
+                        {mess.userName}: {mess.messageChat}
+                      </h1>
+                    );
+                  })}{" "}
+                  <div ref={messagesEndRef} />
+                </div>
+                <div className="absolute -bottom-10 w-full pr-4">
+                  <input
+                    placeholder="Enter chat content here...."
+                    className="w-full outline-none rounded-2xl px-4 py-1"
+                    value={messageChat}
+                    type="text"
+                    name=""
+                    id=""
+                    onChange={(e) => setMessageChat(e.target.value)}
+                    onKeyDown={sendMessage}
+                  />
+                </div>
+              </div>
+            </div>
+          )}
+
+          <Modal
+            title="What's your name?"
+            open={isModalOpen}
+            footer={null}
+            onCancel={() => setIsModalOpen(false)}
+          >
+            <div className="mt-5">
+              <input
+                className="w-full outline-none rounded-2xl px-4 py-1"
+                placeholder="Enter your name to display in chat channel..."
+                type="text"
+                onChange={(e) => setUsername(e.target.value)}
+                onKeyDown={handleSubmit}
+              />
+            </div>
+          </Modal>
         </div>
       </div>
     </>
