@@ -478,7 +478,7 @@ function App() {
                 className={
                   hiddenYoutube
                     ? "hidden"
-                    : "px-4 py-4 absolute flex flex-col gap-4 top-0 bottom-0 left-[152px] m-auto rounded-xl bg-black/30 max-h-[400px] backdrop-blur-sm z-20 cursor-move"
+                    : "px-4 py-4 absolute flex flex-col gap-4 top-0 bottom-0 left-[152px] m-auto rounded-xl bg-black/30 max-h-fit backdrop-blur-sm z-20 cursor-move"
                 }
               >
                 <div className="flex justify-between items-center">
