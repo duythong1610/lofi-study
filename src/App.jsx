@@ -31,8 +31,18 @@ function App() {
   const messagesEndRef = useRef(null);
 
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isModalOpenFocusTime, setIsModalOpenFocusTime] = useState(false);
   const [isUser, setIsUser] = useState(false);
   const [userName, setUsername] = useState("");
+
+  const [taskName, setTaskName] = useState("");
+  const [listTask, setListTask] = useState([]);
+  const [hours, setHours] = useState("");
+  const [minutes, setMinutes] = useState("");
+  const [countdown, setCountdown] = useState(0);
+  const [intervalId, setIntervalId] = useState(null);
+  const [isCounting, setIsCounting] = useState(false);
+
   const [toggleScreen, setToggleScreen] = useState(false);
   const [toggleMixer, setToggleMixer] = useState(false);
   const [toggleYoutube, setToggleYoutube] = useState(false);
@@ -55,6 +65,44 @@ function App() {
   const handleError = () => {
     setIsUrlValid(false);
   };
+
+  const handleStartCountdown = () => {
+    setListTask((prevState) => [...prevState, { taskName, hours, minutes }]);
+    const totalSeconds =
+      Number(listTask[0].hours) * 3600 + Number(listTask[0].minutes) * 60;
+    setCountdown(totalSeconds);
+    setIsCounting(true);
+    setTaskName("");
+    setHours("");
+    setMinutes("");
+  };
+
+  console.log(listTask[0]);
+
+  const handleStopCountdown = () => {
+    clearInterval(intervalId);
+    setIsCounting(false);
+  };
+
+  useEffect(() => {
+    if (isCounting) {
+      const id = setInterval(() => {
+        setCountdown((prevCountdown) => prevCountdown - 1);
+      }, 1000);
+      setIntervalId(id);
+    } else {
+      clearInterval(intervalId);
+    }
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, [isCounting]);
+
+  useEffect(() => {
+    if (countdown === 0) {
+      handleStopCountdown();
+    }
+  }, [countdown]);
 
   const getCurrentSocketTime = () => {
     const currentDate = new Date();
@@ -328,13 +376,47 @@ function App() {
     greeting = "Good Afternoon!";
   }
 
+  const formatTime = (time) => {
+    const hours = Math.floor(time / 3600);
+    const minutes = Math.floor((time % 3600) / 60);
+    const seconds = time % 60;
+    return {
+      hours: hours.toString().padStart(2, "0"),
+      minutes: minutes.toString().padStart(2, "0"),
+      seconds: seconds.toString().padStart(2, "0"),
+    };
+  };
+
   return (
     <>
-      <div className="relative h-screen max-h-screen overflow-hidden">
+      <div className="relative h-screen max-h-screen overflow-hidden w-screen">
+        {countdown > 0 && (
+          <Draggable positionOffset={{ x: "-50%", y: "-50%" }}>
+            <div className="absolute top-1/2 left-1/2 m-0 -translate-x-[50%] -translate-y-[50%] z-10 font-semibold cursor-move select-none flex items-center gap-3 font-digital-7">
+              <h1 className="text-white text-8xl neonText text-center w-[160px] font-digital-7">
+                {formatTime(countdown).hours}
+              </h1>
+              <span className="text-white text-8xl neonText text-center mb-5 font-digital-7 ">
+                :
+              </span>
+
+              <h1 className="text-white text-8xl neonText text-center w-[160px] font-digital-7">
+                {formatTime(countdown).minutes}
+              </h1>
+              <span className="text-white text-8xl neonText text-center mb-5 font-digital-7">
+                :
+              </span>
+              <h1 className="text-white text-8xl neonText text-center w-[160px] font-digital-7">
+                {formatTime(countdown).seconds}
+              </h1>
+            </div>
+          </Draggable>
+        )}
+
         <div>
           <video
             key={bgItem?.id}
-            className="fixed right-0 bottom-0 min-w-full min-h-screen transition-all"
+            className="fixed right-0 bottom-0 min-w-full min-h-screen transition-all object-cover"
             autoPlay={true}
             muted
             loop
@@ -349,6 +431,7 @@ function App() {
             />
           </video>
         </div>
+
         <audio controls ref={audioRef} className="hidden">
           <source
             src="https://storage.googleapis.com/my-image-products/relaxCat.mp3"
@@ -396,7 +479,10 @@ function App() {
             </Tooltip>
 
             <Tooltip placement="right" title="Focus Time">
-              <FloatButton icon={<ClockCircleOutlined />} />
+              <FloatButton
+                icon={<ClockCircleOutlined />}
+                onClick={() => setIsModalOpenFocusTime(true)}
+              />
             </Tooltip>
             <Tooltip placement="right" title="Youtube">
               <FloatButton
@@ -615,6 +701,58 @@ function App() {
                 onChange={(e) => setUsername(e.target.value)}
                 onKeyDown={handleSubmit}
               />
+            </div>
+          </Modal>
+
+          <Modal
+            title="Hey bro, you are so hard working, let's get started!"
+            open={isModalOpenFocusTime}
+            footer={null}
+            onCancel={() => setIsModalOpenFocusTime(false)}
+          >
+            <div className="mt-5 flex flex-col gap-10">
+              <input
+                value={taskName}
+                className="w-full outline-none py-1 bg-transparent text-white border-b-2"
+                placeholder="Enter Task name"
+                type="text"
+                onChange={(e) => setTaskName(e.target.value)}
+              />
+              <div className="flex gap-10">
+                <input
+                  value={hours}
+                  className="w-full outline-none py-1 bg-transparent text-white border-b-2"
+                  placeholder="Enter hours"
+                  type="text"
+                  onChange={(e) => setHours(e.target.value)}
+                />
+                <input
+                  value={minutes}
+                  className="w-full outline-none py-1 bg-transparent text-white border-b-2"
+                  placeholder="Enter minutes"
+                  type="text"
+                  onChange={(e) => setMinutes(e.target.value)}
+                />
+              </div>
+
+              <button
+                className="text-white w-[180px] m-auto bg-black py-[6px] rounded-xl"
+                onClick={() => handleStartCountdown()}
+              >
+                Get started!
+              </button>
+              <div>
+                <h1 className="text-white">
+                  Task in progress:
+                  {listTask.map((item) => {
+                    return (
+                      <div>
+                        <p className="text-white">{item.taskName}</p>
+                      </div>
+                    );
+                  })}
+                </h1>
+              </div>
             </div>
           </Modal>
         </div>
