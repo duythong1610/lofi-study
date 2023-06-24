@@ -19,6 +19,7 @@ const socket = io.connect("https://socket-server-2cuv.onrender.com");
 
 function App() {
   const [bgItem, setBgItem] = useState("");
+  const [data, setData] = useState("");
 
   const [messageChat, setMessageChat] = useState("");
   const [messages, setMessages] = useState([]);
@@ -49,6 +50,17 @@ function App() {
   const [toggleChat, setToggleChat] = useState(false);
   const [hiddenYoutube, setHiddenYoutube] = useState(false);
 
+  async function logJSONData() {
+    const response = await fetch("./data.json");
+    const jsonData = await response.json();
+    setData(jsonData);
+  }
+  useEffect(() => {
+    logJSONData();
+  }, []);
+
+  console.log(data);
+
   const handleAudio = () => {
     if (!isPlaying) {
       audioRef.current.play();
@@ -68,14 +80,19 @@ function App() {
 
   const handleStartCountdown = () => {
     setListTask((prevState) => [...prevState, { taskName, hours, minutes }]);
-    const totalSeconds =
-      Number(listTask[0].hours) * 3600 + Number(listTask[0].minutes) * 60;
-    setCountdown(totalSeconds);
-    setIsCounting(true);
-    setTaskName("");
-    setHours("");
-    setMinutes("");
   };
+
+  useEffect(() => {
+    if (listTask.length > 0) {
+      const totalSeconds =
+        Number(listTask[0].hours) * 3600 + Number(listTask[0].minutes) * 60;
+      setCountdown(totalSeconds);
+      setIsCounting(true);
+      setTaskName("");
+      setHours("");
+      setMinutes("");
+    }
+  }, [listTask]);
 
   console.log(listTask[0]);
 
@@ -170,137 +187,6 @@ function App() {
 
   const currentVolume = localStorage.getItem("volume");
 
-  const data = [
-    {
-      id: 1,
-      name: "Levi",
-      background:
-        "https://storage.googleapis.com/my-image-products/attack.webm",
-    },
-    {
-      id: 2,
-      name: "Joker",
-      background: "https://storage.googleapis.com/my-image-products/joker.webm",
-    },
-    {
-      id: 3,
-      name: "Gojo",
-      background: "https://storage.googleapis.com/my-image-products/gojo.webm",
-    },
-    {
-      id: 4,
-      name: "Broly",
-      background: "https://storage.googleapis.com/my-image-products/broly.webm",
-    },
-    {
-      id: 5,
-      name: "Dead Pool",
-      background:
-        "https://storage.googleapis.com/my-image-products/deadpool.webm",
-    },
-    {
-      id: 6,
-      name: "Spider Man",
-      background:
-        "https://storage.googleapis.com/my-image-products/spiderman.webm",
-    },
-    {
-      id: 7,
-      name: "Saitama",
-      background:
-        "https://storage.googleapis.com/my-image-products/saitama.webm",
-    },
-    {
-      id: 8,
-      name: "Super Man",
-      background:
-        "https://storage.googleapis.com/my-image-products/superman.mp4",
-    },
-    {
-      id: 9,
-      name: "Iron Man",
-      background:
-        "https://storage.googleapis.com/my-image-products/ironman.webm",
-    },
-    {
-      id: 10,
-      name: "Zenitsu",
-      background:
-        "https://storage.googleapis.com/my-image-products/zenitsu.webm",
-    },
-    {
-      id: 11,
-      name: "Naruto",
-      background: "https://storage.googleapis.com/my-image-products/naruto.mp4",
-    },
-    {
-      id: 12,
-      name: "Nature",
-      background:
-        "https://storage.googleapis.com/my-image-products/nature.webm",
-    },
-    {
-      id: 13,
-      name: "Attack On Titan",
-      background:
-        "https://storage.googleapis.com/my-image-products/attackontitan.mp4",
-    },
-    {
-      id: 14,
-      name: "Tanjiro",
-      background:
-        "https://storage.googleapis.com/my-image-products/tanjiro1.webm",
-    },
-    {
-      id: 15,
-      name: "Tanjiro & Nezuko",
-      background:
-        "https://storage.googleapis.com/my-image-products/tanjuro_nezuko.webm",
-    },
-    {
-      id: 16,
-      name: "Zenisu 1",
-      background:
-        "https://storage.googleapis.com/my-image-products/zenisuchargeblade.webm",
-    },
-    {
-      id: 17,
-      name: "Ryomen Sakuna",
-      background:
-        "https://storage.googleapis.com/my-image-products/ryomensakuna.webm",
-    },
-    {
-      id: 18,
-      name: "Golden Frieza",
-      background:
-        "https://storage.googleapis.com/my-image-products/goldenfrieza.webm",
-    },
-    {
-      id: 19,
-      name: "Chainsaw Man",
-      background:
-        "https://storage.googleapis.com/my-image-products/chainsawman.webm",
-    },
-    {
-      id: 20,
-      name: "Eren Yeager",
-      background:
-        "https://storage.googleapis.com/my-image-products/erenyeager1.webm",
-    },
-    {
-      id: 21,
-      name: "Eren Yeager 1",
-      background:
-        "https://storage.googleapis.com/my-image-products/erenyeager2.webm",
-    },
-    {
-      id: 22,
-      name: "Kimetsu no Yaiba",
-      background:
-        "https://storage.googleapis.com/my-image-products/kimetsuno yaiba.webm",
-    },
-  ];
-
   const handleChangeScreen = (item) => {
     setBgItem(item);
     localStorage.setItem("bg", item.background);
@@ -387,28 +273,37 @@ function App() {
     };
   };
 
+  console.log(countdown);
+
   return (
     <>
       <div className="relative h-screen max-h-screen overflow-hidden w-screen">
-        {countdown > 0 && (
+        {countdown && (
           <Draggable positionOffset={{ x: "-50%", y: "-50%" }}>
-            <div className="absolute top-1/2 left-1/2 m-0 -translate-x-[50%] -translate-y-[50%] z-10 font-semibold cursor-move select-none flex items-center gap-3 font-digital-7">
-              <h1 className="text-white text-8xl neonText text-center w-[160px] font-digital-7">
-                {formatTime(countdown).hours}
-              </h1>
-              <span className="text-white text-8xl neonText text-center mb-5 font-digital-7 ">
-                :
-              </span>
+            <div className="absolute top-1/2 left-1/2 m-0 -translate-x-[50%] -translate-y-[50%] z-10">
+              <div>
+                <p className="text-white font-semibold text-xl neonText text-center">
+                  You are {listTask[0].taskName} - Left time:
+                </p>
+              </div>
+              <div className="font-semibold cursor-move select-none flex items-center gap-3 font-digital-7">
+                <h1 className="text-white text-8xl neonText text-center w-[160px] font-digital-7">
+                  {formatTime(countdown).hours}
+                </h1>
+                <span className="text-white text-8xl neonText text-center mb-5 font-digital-7 ">
+                  :
+                </span>
 
-              <h1 className="text-white text-8xl neonText text-center w-[160px] font-digital-7">
-                {formatTime(countdown).minutes}
-              </h1>
-              <span className="text-white text-8xl neonText text-center mb-5 font-digital-7">
-                :
-              </span>
-              <h1 className="text-white text-8xl neonText text-center w-[160px] font-digital-7">
-                {formatTime(countdown).seconds}
-              </h1>
+                <h1 className="text-white text-8xl neonText text-center w-[160px] font-digital-7">
+                  {formatTime(countdown).minutes}
+                </h1>
+                <span className="text-white text-8xl neonText text-center mb-5 font-digital-7">
+                  :
+                </span>
+                <h1 className="text-white text-8xl neonText text-center w-[160px] font-digital-7">
+                  {formatTime(countdown).seconds}
+                </h1>
+              </div>
             </div>
           </Draggable>
         )}
