@@ -280,7 +280,7 @@ function App() {
 
   return (
     <>
-      <div className="relative h-screen max-h-screen overflow-hidden w-screen bg-black/10 backdrop-blur-3xl">
+      <div className="relative h-screen max-h-screen overflow-hidden w-screen bg-black">
         {countdown && (
           <Draggable positionOffset={{ x: "-50%", y: "-50%" }}>
             <div className="absolute top-1/2 left-1/2 m-0 -translate-x-[50%] -translate-y-[50%] z-10">
