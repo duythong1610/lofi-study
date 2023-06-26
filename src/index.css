@@ -31,16 +31,6 @@
   transition: none !important;
 }
 
-.ant-modal-content,
-.ant-modal-header {
-  background: rgb(0 0 0 / 0.1) !important;
-  backdrop-filter: blur(12px) !important;
-}
-.ant-modal-title,
-.ant-modal-close-x {
-  color: #fff !important;
-}
-
 .slider::-webkit-slider-thumb {
   -webkit-appearance: none; /* Override default look */
   appearance: none;
