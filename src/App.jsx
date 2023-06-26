@@ -15,6 +15,9 @@ import {
 import { FloatButton, Modal, Tooltip } from "antd";
 import { Slider } from "antd";
 import { io } from "socket.io-client";
+import { LazyLoadImage } from "react-lazy-load-image-component";
+import "react-lazy-load-image-component/src/effects/blur.css";
+
 const socket = io.connect("https://socket-server-2cuv.onrender.com");
 
 function App() {
@@ -189,7 +192,7 @@ function App() {
 
   const handleChangeScreen = (item) => {
     setBgItem(item);
-    localStorage.setItem("bg", item.background);
+    localStorage.setItem("bg", item.video);
     setBgSelected(localStorage.getItem("bg"));
   };
 
@@ -277,7 +280,7 @@ function App() {
 
   return (
     <>
-      <div className="relative h-screen max-h-screen overflow-hidden w-screen">
+      <div className="relative h-screen max-h-screen overflow-hidden w-screen bg-black/10 backdrop-blur-3xl">
         {countdown && (
           <Draggable positionOffset={{ x: "-50%", y: "-50%" }}>
             <div className="absolute top-1/2 left-1/2 m-0 -translate-x-[50%] -translate-y-[50%] z-10">
@@ -307,25 +310,26 @@ function App() {
             </div>
           </Draggable>
         )}
-
-        <div>
-          <video
-            key={bgItem?.id}
-            className="fixed right-0 bottom-0 min-w-full min-h-screen transition-all object-cover"
-            autoPlay={true}
-            muted
-            loop
-          >
-            <source
-              src={
-                bgSelected
-                  ? bgSelected
-                  : "https://storage.googleapis.com/my-image-products/attack.webm"
-              }
-              type="video/webm"
-            />
-          </video>
-        </div>
+        {bgSelected.length > 0 && (
+          <div>
+            <video
+              key={bgItem?.id}
+              className="fixed right-0 bottom-0 min-w-full min-h-screen transition-all object-cover"
+              autoPlay={true}
+              muted
+              loop
+            >
+              <source
+                src={
+                  bgSelected
+                    ? bgSelected
+                    : "https://storage.googleapis.com/my-image-products/attack.webm"
+                }
+                type="video/webm"
+              />
+            </video>
+          </div>
+        )}
 
         <audio controls ref={audioRef} className="hidden">
           <source
@@ -418,18 +422,19 @@ function App() {
                 </Tooltip>
               </div>
               <div className="list flex flex-col gap-4 w-[300px] h-full overflow-auto">
-                {data.map((item) => {
+                {data?.map((item) => {
                   return (
                     <div
                       key={item.id}
                       className={
-                        item.background === bgSelected
+                        item.video === bgSelected
                           ? "border-[2px] border-white rounded-xl item relative w-full cursor-pointer"
                           : "item relative w-full cursor-pointer opacity-70"
                       }
                       onClick={() => handleChangeScreen(item)}
                     >
-                      <video
+                      <LazyLoadImage
+                        effect="blur"
                         src={item.background}
                         alt=""
                         className="w-full h-[190px] object-cover rounded-xl"
