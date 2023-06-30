@@ -1,9 +1,10 @@
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import { io } from "socket.io-client";
 const socket = io.connect("https://socket-server-2cuv.onrender.com");
+import EmojiPicker, { EmojiStyle, Emoji } from "emoji-picker-react";
 
 const ChatChannelComponent = ({
   userName,
@@ -16,6 +17,8 @@ const ChatChannelComponent = ({
   setMessages,
 }) => {
   const messagesEndRef = useRef(null);
+  const [isOpenEmoji, setIsOpenEmoji] = useState(false);
+  const [selectedEmoji, setSelectedEmoji] = useState("");
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -49,6 +52,11 @@ const ChatChannelComponent = ({
       });
       setMessageChat("");
     }
+  };
+
+  const onClick = (emojiData, event) => {
+    const emojiText = emojiData.emoji;
+    setMessageChat((prevValue) => prevValue + emojiText);
   };
 
   useEffect(() => {
@@ -98,17 +106,46 @@ const ChatChannelComponent = ({
                 })}{" "}
                 <div ref={messagesEndRef} className="mt-2" />
               </div>
+              {isOpenEmoji && (
+                <div className="fixed top-[80px] left-0 right-0 m-auto">
+                  <EmojiPicker
+                    onEmojiClick={onClick}
+                    autoFocusSearch={false}
+                    emojiStyle={EmojiStyle.FACEBOOK}
+                  />
+                </div>
+              )}
               <div className="absolute -bottom-10 w-full pr-4">
-                <input
-                  placeholder="Enter chat content here...."
-                  className="w-full outline-none py-1 bg-transparent text-white border-b-2"
-                  value={messageChat}
-                  type="text"
-                  name=""
-                  id=""
-                  onChange={(e) => setMessageChat(e.target.value)}
-                  onKeyDown={sendMessage}
-                />
+                {/* {selectedEmoji ? (
+                  <Emoji
+                    unified={selectedEmoji}
+                    emojiStyle={EmojiStyle.APPLE}
+                    size={30}
+                  />
+                ) : null} */}
+                <div className="flex items-center relative">
+                  <input
+                    placeholder="Enter chat content here...."
+                    className="w-full outline-none py-1 bg-transparent text-white border-b-2"
+                    value={messageChat}
+                    type="text"
+                    name=""
+                    id=""
+                    onChange={(e) => setMessageChat(e.target.value)}
+                    onKeyDown={sendMessage}
+                  />
+
+                  <div
+                    className="absolute right-0 top-0 z-50 cursor-pointer"
+                    onClick={() => setIsOpenEmoji(!isOpenEmoji)}
+                  >
+                    <Emoji
+                      unified="1f600"
+                      size="25"
+                      className="cursor-pointer"
+                    />
+                  </div>
+                </div>
               </div>
             </div>
           </div>

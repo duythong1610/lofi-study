@@ -116,3 +116,7 @@ input[type="number"]::-webkit-inner-spin-button {
   /*  slider progress trick  */
   box-shadow: -407px 0 0 400px #da2f68;
 }
+
+.EmojiPickerReact {
+  margin: auto;
+}
