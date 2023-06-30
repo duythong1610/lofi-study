@@ -51,6 +51,7 @@ const ChatChannelComponent = ({
         timeChat: getCurrentSocketTime(),
       });
       setMessageChat("");
+      setIsOpenEmoji(false);
     }
   };
 
