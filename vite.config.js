@@ -10,7 +10,7 @@ export default defineConfig({
   },
   proxy: {
     "/socket.io": {
-      target: "http://localhost:3000",
+      target: "https://socket-server-2cuv.onrender.com",
       changeOrigin: true,
       secure: false,
       ws: true,

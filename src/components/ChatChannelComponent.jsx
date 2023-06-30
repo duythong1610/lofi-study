@@ -3,7 +3,7 @@ import { Tooltip } from "antd";
 import React, { useEffect, useRef } from "react";
 import Draggable from "react-draggable";
 import { io } from "socket.io-client";
-const socket = io.connect("http://localhost:3002/");
+const socket = io.connect("https://socket-server-2cuv.onrender.com");
 
 const ChatChannelComponent = ({
   userName,
