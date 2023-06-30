@@ -163,11 +163,12 @@ function App() {
           />
 
           <Modal
-            title="What's your name?"
+            title={null}
             open={isModalOpen}
             footer={null}
             onCancel={() => setIsModalOpen(false)}
           >
+            <h1 className="text-base font-medium">What's your name?</h1>
             <div className="mt-5">
               <input
                 className="w-full outline-none py-1 bg-transparent border-b-2"

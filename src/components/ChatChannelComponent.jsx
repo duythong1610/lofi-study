@@ -5,6 +5,8 @@ import Draggable from "react-draggable";
 import { io } from "socket.io-client";
 const socket = io.connect("https://socket-server-2cuv.onrender.com");
 import EmojiPicker, { EmojiStyle, Emoji } from "emoji-picker-react";
+import data from "@emoji-mart/data/sets/14/apple.json";
+import Picker from "@emoji-mart/react";
 
 const ChatChannelComponent = ({
   userName,
@@ -22,6 +24,50 @@ const ChatChannelComponent = ({
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const custom = [
+    {
+      id: "github",
+      name: "GitHub",
+      emojis: [
+        {
+          id: "octocat",
+          name: "Octocat",
+          keywords: ["github"],
+          skins: [
+            {
+              src: "https://mcdn.coolmate.me/image/October2021/meme-cheems-1.png",
+            },
+          ],
+        },
+        {
+          id: "shipit",
+          name: "Squirrel",
+          keywords: ["github"],
+          skins: [
+            { src: "./shipit-1.png" },
+            { src: "./shipit-2.png" },
+            { src: "./shipit-3.png" },
+            { src: "./shipit-4.png" },
+            { src: "./shipit-5.png" },
+            { src: "./shipit-6.png" },
+          ],
+        },
+      ],
+    },
+    {
+      id: "gifs",
+      name: "GIFs",
+      emojis: [
+        {
+          id: "party_parrot",
+          name: "Party Parrot",
+          keywords: ["dance", "dancing"],
+          skins: [{ src: "./party_parrot.gif" }],
+        },
+      ],
+    },
+  ];
 
   const getCurrentSocketTime = () => {
     const currentDate = new Date();
@@ -56,8 +102,9 @@ const ChatChannelComponent = ({
   };
 
   const onClick = (emojiData, event) => {
-    const emojiText = emojiData.emoji;
-    setMessageChat((prevValue) => prevValue + emojiText);
+    console.log(emojiData);
+    // const emojiText = emojiData.emoji;
+    setMessageChat((prevValue) => prevValue + emojiData.native);
   };
 
   useEffect(() => {
@@ -109,10 +156,12 @@ const ChatChannelComponent = ({
               </div>
               {isOpenEmoji && (
                 <div className="fixed top-[80px] left-0 right-0 m-auto">
-                  <EmojiPicker
-                    onEmojiClick={onClick}
-                    autoFocusSearch={false}
-                    emojiStyle={EmojiStyle.FACEBOOK}
+                  <Picker
+                    set="apple"
+                    data={data}
+                    onEmojiSelect={onClick}
+                    // onClickOutside={() => setIsOpenEmoji(false)}
+                    custom={custom}
                   />
                 </div>
               )}
