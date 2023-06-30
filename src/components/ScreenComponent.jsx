@@ -4,7 +4,7 @@ const ScreenComponent = ({ bgItem, bgSelected }) => {
   return (
     <div>
       {" "}
-      {bgSelected.length > 0 && (
+      {bgSelected?.length > 0 && (
         <div>
           <video
             key={bgItem?.id}
