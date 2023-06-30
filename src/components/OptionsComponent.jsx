@@ -13,6 +13,7 @@ const OptionsComponent = ({
   userName,
   setIsModalOpen,
   handleToggleYoutube,
+  toggleMixer,
   toggleChat,
   toggleScreen,
   setToggleChat,
@@ -49,12 +50,12 @@ const OptionsComponent = ({
     <div>
       {" "}
       <FloatButton.Group
-        style={{
-          left: 84,
-        }}
-        className="bg-black/10 backdrop-blur-md flex flex-col justify-around rounded-2xl p-2 w-fit h-fit top-1/2 -translate-x-[50%] -translate-y-[50%]"
+        // style={{
+        //   left: 84,
+        // }}
+        className="bg-black/60 backdrop-blur-md left-[5%] flex flex-col justify-around rounded-2xl p-2 w-fit h-fit top-1/2 -translate-x-[50%] -translate-y-[50%]"
       >
-        <Tooltip placement="right" title="Mixed">
+        <Tooltip placement="right" title="Mixer">
           <FloatButton
             icon={<SlidersOutlined />}
             className="!transition-none hover:!text-white"

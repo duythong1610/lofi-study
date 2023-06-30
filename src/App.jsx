@@ -3,7 +3,6 @@ import "./index.css";
 import Draggable from "react-draggable";
 
 import { Modal } from "antd";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import ScreenComponent from "./components/ScreenComponent";
 import ScreenListComponent from "./components/ScreenListComponent";
 import MixerComponent from "./components/MixerComponent";
@@ -11,12 +10,31 @@ import YoutubeComponent from "./components/YoutubeComponent";
 import ChatChannelComponent from "./components/ChatChannelComponent";
 import OptionsComponent from "./components/OptionsComponent";
 import GreetingComponent from "./components/GreetingComponent";
-import TimeLeftComponent from "./components/TimeLeftComponent";
 import FocusTimeComponent from "./components/FocusTimeComponent";
+import HeaderComponent from "./components/HeaderComponent";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  playTrack,
+  pauseTrack,
+  nextTrack,
+  prevTrack,
+  fetchTracks,
+} from "./redux/slides/playlistSlice";
 
 function App() {
   const [bgItem, setBgItem] = useState("");
+  const [playListItem, setPlaylistItem] = useState("");
   const [bgSelected, setBgSelected] = useState(localStorage.getItem("bg"));
+  const [playlistSelected, setPlayListSelected] = useState(
+    localStorage.getItem("playlist")
+  );
+
+  const tracks = useSelector((state) => state.playlist.tracks);
+  const selectedTrack = useSelector(
+    (state) => state.playlist.currentTrackIndex
+  );
+  const isPlaying = useSelector((state) => state.playlist.isPlaying);
+  const dispatch = useDispatch();
 
   const [messageChat, setMessageChat] = useState("");
   const [messages, setMessages] = useState([]);
@@ -26,42 +44,33 @@ function App() {
   const [isUser, setIsUser] = useState(false);
   const [userName, setUsername] = useState("");
 
-  const [listTask, setListTask] = useState([]);
-
-  const [countdown, setCountdown] = useState(0);
-  const [intervalId, setIntervalId] = useState(null);
-  const [isCounting, setIsCounting] = useState(false);
-
   const [toggleScreen, setToggleScreen] = useState(false);
   const [toggleMixer, setToggleMixer] = useState(false);
   const [toggleYoutube, setToggleYoutube] = useState(false);
   const [toggleChat, setToggleChat] = useState(false);
   const [hiddenYoutube, setHiddenYoutube] = useState(false);
 
-  const handleStopCountdown = () => {
-    clearInterval(intervalId);
-    setIsCounting(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
+
+  const audioRef = useRef(null);
+
+  const handleFetchTracks = () => {
+    dispatch(fetchTracks());
   };
 
   useEffect(() => {
-    if (isCounting) {
-      const id = setInterval(() => {
-        setCountdown((prevCountdown) => prevCountdown - 1);
-      }, 1000);
-      setIntervalId(id);
-    } else {
-      clearInterval(intervalId);
-    }
-    return () => {
-      clearInterval(intervalId);
-    };
-  }, [isCounting]);
+    handleFetchTracks();
+  }, []);
 
   useEffect(() => {
-    if (countdown === 0) {
-      handleStopCountdown();
+    const audioElement = audioRef.current;
+    if (audioElement?.paused || isPlaying) {
+      audioElement?.play();
+    } else if (audioElement?.played || isPlaying) {
+      audioElement?.pause();
     }
-  }, [countdown]);
+  }, [isPlaying, selectedTrack]);
 
   const handleSubmit = (e) => {
     if (e.keyCode === 13) {
@@ -73,8 +82,6 @@ function App() {
       }
     }
   };
-
-  const currentVolume = localStorage.getItem("volume");
 
   const handleChangeScreen = (item) => {
     setBgItem(item);
@@ -92,10 +99,26 @@ function App() {
 
   return (
     <>
+      <HeaderComponent
+        audioRef={audioRef}
+        setCurrentTime={setCurrentTime}
+        duration={duration}
+        currentTime={currentTime}
+      />
       <div className="relative h-screen max-h-screen overflow-hidden w-screen bg-black">
-        <TimeLeftComponent countdown={countdown} listTask={listTask} />
+        <audio
+          className="hidden"
+          src={tracks[selectedTrack]?.url}
+          controls
+          ref={audioRef}
+          onLoadedMetadata={(e) => {
+            setDuration(e.target.duration);
+          }}
+          onTimeUpdate={(e) => {
+            setCurrentTime(e.target.currentTime);
+          }}
+        />
         <ScreenComponent bgItem={bgItem} bgSelected={bgSelected} />
-
         <GreetingComponent />
         <div>
           <OptionsComponent
@@ -105,6 +128,7 @@ function App() {
             setToggleScreen={setToggleScreen}
             toggleChat={toggleChat}
             setToggleChat={setToggleChat}
+            toggleMixer={toggleMixer}
             setToggleMixer={setToggleMixer}
             setToggleYoutube={setToggleYoutube}
             setIsModalOpen={setIsModalOpen}
@@ -117,6 +141,7 @@ function App() {
             setToggleScreen={setToggleScreen}
           />
           <MixerComponent
+            playlistSelected={playlistSelected}
             toggleMixer={toggleMixer}
             setToggleMixer={setToggleMixer}
           />
@@ -156,7 +181,6 @@ function App() {
           <FocusTimeComponent
             isModalOpenFocusTime={isModalOpenFocusTime}
             setIsModalOpenFocusTime={setIsModalOpenFocusTime}
-            setListTask={setListTask}
           />
         </div>
       </div>

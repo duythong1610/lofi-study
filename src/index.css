@@ -31,18 +31,88 @@
   transition: none !important;
 }
 
-.slider::-webkit-slider-thumb {
-  -webkit-appearance: none; /* Override default look */
-  appearance: none;
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #ccc; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+:where(.css-dev-only-do-not-override-1wazalj).ant-modal .ant-modal-title,
+:where(.css-dev-only-do-not-override-1wazalj).ant-modal .ant-modal-header,
+.ant-modal-close-x,
+.ant-modal-content {
+  color: #fff !important;
+  background-color: rgb(0 0 0 / 0.6) !important;
 }
 
+.slider,
+.slider-timer {
+  /* removing default appearance */
+
+  -webkit-appearance: none;
+  appearance: none;
+  /* creating a custom design */
+  background: #e5dfdf45;
+
+  cursor: pointer;
+  outline: none;
+  /*  slider progress trick  */
+  overflow: hidden;
+  border-radius: 16px;
+}
+
+.slider-timer {
+  width: 100%;
+  height: 5px;
+}
+
+/* Track: webkit browsers */
+.slider::-webkit-slider-runnable-track,
+.slider-timer::-webkit-slider-runnable-track {
+  background: transparent;
+  border-radius: 16px;
+}
+
+/* Track: Mozilla Firefox */
+.slider::-moz-range-track,
+.slider-timer::-moz-range-track {
+  height: 15px;
+  background: #ccc;
+  border-radius: 16px;
+}
+
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Thumb: webkit */
+.slider::-webkit-slider-thumb {
+  /* removing default appearance */
+  -webkit-appearance: none;
+  appearance: none;
+  /* creating a custom design */
+  height: 20px;
+  width: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  border: 2px solid #da2f68;
+  /*  slider progress trick  */
+  box-shadow: -407px 0 0 400px #da2f68;
+}
+
+/* Thumb: Firefox */
 .slider::-moz-range-thumb {
-  width: 25px; /* Set a specific slider handle width */
-  height: 25px; /* Slider handle height */
-  background: #ccc; /* Green background */
-  cursor: pointer; /* Cursor on hover */
+  height: 15px;
+  width: 15px;
+  background-color: #ccc;
+  border-radius: 50%;
+  /*  slider progress trick  */
+  box-shadow: -407px 0 0 400px #da2f68;
+}
+
+.slider-timer::-webkit-slider-thumb {
+  /* removing default appearance */
+  -webkit-appearance: none;
+  appearance: none;
+  /* creating a custom design */
+  height: 7px;
+  width: 7px;
+  background-color: #da2f68;
+  /*  slider progress trick  */
+  box-shadow: -407px 0 0 400px #da2f68;
 }

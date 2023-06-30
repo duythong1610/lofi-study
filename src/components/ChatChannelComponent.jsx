@@ -67,7 +67,7 @@ const ChatChannelComponent = ({
       {" "}
       {toggleChat && isUser && (
         <Draggable scale={1}>
-          <div className="pl-4 py-4 absolute flex w-[400px] flex-col gap-4 top-0 bottom-0 left-[152px] m-auto rounded-xl bg-black/50 max-h-[600px] backdrop-blur-sm z-20 cursor-move">
+          <div className="pl-4 py-4 absolute flex w-[400px] flex-col gap-4 top-0 bottom-0 left-[152px] m-auto rounded-xl bg-black/60 max-h-[600px] backdrop-blur-sm z-20 cursor-move">
             <div className="flex justify-between items-center">
               <h1 className="text-white font-semibold">Chat Channel</h1>
               <Tooltip title="Close">

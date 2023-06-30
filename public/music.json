@@ -1,0 +1,26 @@
+[
+  {
+    "playlistName": "Morning Coffee",
+    "genres": "Chill",
+    "url": "https://storage.googleapis.com/my-image-products/morning_coffee_lofi_hip_hop_study_beats_120500922006884772.mp3",
+    "background": "https://storage.googleapis.com/my-image-products/morning_coffee_lofi_hip_hop_study_beats_120500922006884772.png"
+  },
+  {
+    "playlistName": "Night Lofi",
+    "genres": "Chill",
+    "url": "https://storage.googleapis.com/my-image-products/night_lofi_playlist_lofi_music_chill_beats_to_relax_study_to_-3092755538291635918.mp3",
+    "background": "https://storage.googleapis.com/my-image-products/night_lofi_playlist_lofi_music_chill_beats_to_relax_study_to_-3092755538291635918.png"
+  },
+  {
+    "playlistName": "City of Gamers",
+    "genres": "Game",
+    "url": "https://storage.googleapis.com/my-image-products/city_of_gamers_chill_gaming_studying_lofi_hip_hop_mix_1_hour_8363305837876682438.mp3",
+    "background": "https://storage.googleapis.com/my-image-products/city_of_gamers_chill_gaming_studying_lofi_hip_hop_mix_1_hour_8363305837876682438.png"
+  },
+  {
+    "playlistName": "Swing beats Jazz",
+    "genres": "Jazz Hiphop",
+    "url": "https://storage.googleapis.com/my-image-products/swing_beats_jazz_hop_lo_fi_chill_mix_-3071401612693559953.mp3",
+    "background": "https://storage.googleapis.com/my-image-products/swing_beats_jazz_hop_lo_fi_chill_mix_-3071401612693559953.png"
+  }
+]
