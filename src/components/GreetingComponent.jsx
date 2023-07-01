@@ -1,7 +1,13 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import Draggable from "react-draggable";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 
 const GreetingComponent = () => {
+  const { t } = useTranslation();
+  const user = useSelector((state) => state.user);
+  const [quotes, setQuotes] = useState("");
   const currentTimeUS = new Date().toLocaleString("en-US", {
     weekday: "long",
     month: "long",
@@ -17,12 +23,23 @@ const GreetingComponent = () => {
   let greeting;
 
   if (currentHour < 6 || currentHour > 18) {
-    greeting = "Good Evening!";
+    greeting = t("greetingNight");
   } else if (currentHour > 6 && currentHour < 12) {
-    greeting = "Good Morning!";
+    greeting = t("greetingMorning");
   } else if (currentHour > 12 < 18) {
-    greeting = "Good Afternoon!";
+    greeting = t("greetingAfternoon");
   }
+
+  const fetchRandomQuotes = async () => {
+    const result = await axios.get("https://api.quotable.io/random");
+    console.log(result);
+    setQuotes(`"${result.data.content}"`);
+  };
+
+  useEffect(() => {
+    fetchRandomQuotes();
+  }, []);
+
   return (
     <div>
       {" "}
@@ -31,14 +48,14 @@ const GreetingComponent = () => {
           <div className="mb-10">
             <h1 className="text-white font-medium text-2xl neonText">
               {greeting}
+              {user.firstName && ", " + user.firstName}
             </h1>
             <h1 className="text-white font-medium text-xl neonText">
               It's {currentTimeUS}
             </h1>
           </div>
           <p className="text-white font-medium text-base neonText italic">
-            "Keep your face always toward the sunshine, and shadows will fall
-            behind you."
+            {quotes.replace(";", " ")}
           </p>
         </div>
       </Draggable>

@@ -33,12 +33,48 @@
 
 :where(.css-dev-only-do-not-override-1wazalj).ant-modal .ant-modal-title,
 :where(.css-dev-only-do-not-override-1wazalj).ant-modal .ant-modal-header,
-.ant-modal-close-x,
-.ant-modal-content {
+.ant-modal-content,
+.ant-popover-inner {
   color: #fff !important;
   background-color: rgb(0 0 0 / 0.6) !important;
+  backdrop-filter: blur(4px);
+}
+.ant-modal-close-x {
+  color: #fff !important;
 }
 
+.ant-popover-arrow {
+  display: none !important;
+}
+
+.ant-popover-inner {
+  padding: 0 !important;
+  overflow: hidden !important;
+  border: none !important;
+  min-width: 150px;
+}
+
+.ant-menu {
+  width: fit-content !important;
+}
+
+.ant-menu-item {
+  padding-top: 24px !important;
+  padding-bottom: 24px !important;
+  border-radius: 0px !important;
+  font-size: 16px !important;
+}
+
+.ant-menu-item-selected {
+  background: transparent !important;
+  border-left: 4px solid #db2777 !important;
+  color: #fff !important;
+  padding-left: 20px !important;
+}
+
+.ant-menu-item:hover {
+  color: #fff !important;
+}
 .slider,
 .slider-timer {
   /* removing default appearance */

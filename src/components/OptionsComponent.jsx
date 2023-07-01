@@ -8,6 +8,7 @@ import {
   CommentOutlined,
 } from "@ant-design/icons";
 import { FloatButton, Tooltip } from "antd";
+import { useTranslation } from "react-i18next";
 
 const OptionsComponent = ({
   userName,
@@ -21,6 +22,7 @@ const OptionsComponent = ({
   setToggleScreen,
   setIsModalOpenFocusTime,
 }) => {
+  const { t } = useTranslation();
   const handleFullScreen = () => {
     if (document.fullscreenElement) {
       if (document.exitFullscreen) {
@@ -55,14 +57,14 @@ const OptionsComponent = ({
         // }}
         className="bg-black/60 backdrop-blur-md left-[5%] flex flex-col justify-around rounded-2xl p-2 w-fit h-fit top-1/2 -translate-x-[50%] -translate-y-[50%]"
       >
-        <Tooltip placement="right" title="Mixer">
+        <Tooltip placement="right" title={t("mixerTitle")}>
           <FloatButton
             icon={<SlidersOutlined />}
             className="!transition-none hover:!text-white"
             onClick={() => setToggleMixer(!toggleMixer)}
           />
         </Tooltip>
-        <Tooltip placement="right" title="Screen">
+        <Tooltip placement="right" title={t("screenTitle")}>
           <FloatButton
             icon={<PictureOutlined />}
             className="!transition-none hover:!text-white"
@@ -70,20 +72,20 @@ const OptionsComponent = ({
           />
         </Tooltip>
 
-        <Tooltip placement="right" title="Focus Time">
+        <Tooltip placement="right" title={t("timerTitle")}>
           <FloatButton
             icon={<ClockCircleOutlined />}
             onClick={() => setIsModalOpenFocusTime(true)}
           />
         </Tooltip>
-        <Tooltip placement="right" title="Youtube">
+        <Tooltip placement="right" title={t("youtubeTitle")}>
           <FloatButton
             icon={<YoutubeOutlined />}
             onClick={() => handleToggleYoutube()}
           />
         </Tooltip>
 
-        <Tooltip placement="right" title="Chat">
+        <Tooltip placement="right" title={t("chatChannelTitle")}>
           <FloatButton
             icon={<CommentOutlined />}
             onClick={() => {
@@ -94,7 +96,7 @@ const OptionsComponent = ({
             }}
           />
         </Tooltip>
-        <Tooltip placement="right" title="Full screen">
+        <Tooltip placement="right" title={t("fullScreenTitle")}>
           <FloatButton
             icon={<FullscreenOutlined />}
             onClick={() => handleFullScreen()}

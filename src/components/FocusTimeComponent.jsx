@@ -1,11 +1,13 @@
 import { Modal } from "antd";
 import React, { useEffect, useState } from "react";
 import Draggable from "react-draggable";
+import { useTranslation } from "react-i18next";
 
 const FocusTimeComponent = ({
   isModalOpenFocusTime,
   setIsModalOpenFocusTime,
 }) => {
+  const { t } = useTranslation();
   const [taskName, setTaskName] = useState("");
   const [hours, setHours] = useState("");
   const [minutes, setMinutes] = useState("");
@@ -89,14 +91,12 @@ const FocusTimeComponent = ({
         footer={null}
         onCancel={() => setIsModalOpenFocusTime(false)}
       >
-        <h1 className="text-base font-medium">
-          Hey bro, you are so hard working, let's get started!
-        </h1>
+        <h1 className="text-base font-medium">{t("timerModalTitle")}</h1>
         <div className="mt-5 flex flex-col gap-10 text-white">
           <input
             value={taskName}
             className="w-full outline-none py-1 bg-transparent border-b-2"
-            placeholder="Enter task name"
+            placeholder={t("enterTaskNamePlaceHolder")}
             type="text"
             onChange={(e) => setTaskName(e.target.value)}
           />
@@ -107,7 +107,7 @@ const FocusTimeComponent = ({
               max={24}
               value={hours}
               className="w-full outline-none py-1 bg-transparent border-b-2 !appearance-none m-0"
-              placeholder="Enter hours (1 to 24)"
+              placeholder={t("enterHoursPlaceHolder")}
               onChange={(e) => handleChangeHours(e)}
             />
             <input
@@ -116,7 +116,7 @@ const FocusTimeComponent = ({
               max={60}
               value={minutes}
               className="w-full outline-none py-1 bg-transparent border-b-2 !appearance-none m-0"
-              placeholder="Enter minutes (1 to 60)"
+              placeholder={t("enterMinutesPlaceHolder")}
               onChange={(e) => handleChangeMinutes(e)}
             />
           </div>
@@ -125,7 +125,7 @@ const FocusTimeComponent = ({
             className="text-white w-[180px] m-auto bg-black py-[6px] rounded-xl hover:opacity-70 transition-all"
             onClick={() => handleStartCountdown()}
           >
-            Get started!
+            {t("getStarted")}!
           </button>
           {listTask?.length > 0 && (
             <div>

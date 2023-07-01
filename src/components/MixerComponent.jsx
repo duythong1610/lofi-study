@@ -124,8 +124,11 @@ const MixerComponent = ({ toggleMixer, setToggleMixer }) => {
         };
       });
 
+    console.log(newSounds);
     setSounds(newSounds);
   }, [dataSounds]);
+
+  console.log(sounds);
 
   const handleVolumeChange = (index, event) => {
     const newSounds = [...sounds];
@@ -222,7 +225,7 @@ const MixerComponent = ({ toggleMixer, setToggleMixer }) => {
             <h1 className="text-white mb-0 text-base font-bold mt-5">
               All Sounds:
             </h1>
-            {dataSounds?.map((item, index) => {
+            {sounds?.map((item, index) => {
               return (
                 <div key={item.id}>
                   <div className="list flex gap-4 w-[300px] h-full overflow-auto">
@@ -242,7 +245,7 @@ const MixerComponent = ({ toggleMixer, setToggleMixer }) => {
                       min="0"
                       max="1"
                       step="0.1"
-                      value={item.howl?.volume()}
+                      value={item.howl?._volume}
                       onChange={(event) => handleVolumeChange(index, event)}
                     />
                   </div>

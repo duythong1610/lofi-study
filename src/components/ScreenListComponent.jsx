@@ -1,6 +1,7 @@
 import { CloseCircleOutlined } from "@ant-design/icons";
 import { Tooltip } from "antd";
 import React, { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
@@ -10,6 +11,7 @@ const ScreenListComponent = ({
   toggleScreen,
   setToggleScreen,
 }) => {
+  const { t } = useTranslation();
   const [data, setData] = useState("");
 
   async function logJSONData() {
@@ -27,7 +29,7 @@ const ScreenListComponent = ({
         <div className="pl-4 py-4 absolute flex flex-col gap-4 top-0 bottom-0 left-[calc(5%+50px)] m-auto rounded-xl bg-black/60 max-h-[600px] backdrop-blur-sm z-20">
           <div className="flex justify-between items-center">
             <h1 className="text-white font-semibold">
-              All Screen ({data.length})
+              {t("allScreenTitle")} ({data.length})
             </h1>
             <Tooltip title="Hide">
               <CloseCircleOutlined

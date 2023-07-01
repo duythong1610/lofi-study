@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import "./index.css";
 import Draggable from "react-draggable";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { Modal } from "antd";
 import ScreenComponent from "./components/ScreenComponent";
@@ -12,6 +13,9 @@ import OptionsComponent from "./components/OptionsComponent";
 import GreetingComponent from "./components/GreetingComponent";
 import FocusTimeComponent from "./components/FocusTimeComponent";
 import HeaderComponent from "./components/HeaderComponent";
+import jwt_decode from "jwt-decode";
+import * as UserService from "./services/UserService";
+import { updateUser } from "./redux/slides/userSlice";
 import { useDispatch, useSelector } from "react-redux";
 import {
   playTrack,
@@ -20,171 +24,85 @@ import {
   prevTrack,
   fetchTracks,
 } from "./redux/slides/playlistSlice";
+import { isJsonString } from "./utils/util";
+import Home from "./pages/Home";
 
 function App() {
-  const [bgItem, setBgItem] = useState("");
-  const [playListItem, setPlaylistItem] = useState("");
-  const [bgSelected, setBgSelected] = useState(localStorage.getItem("bg"));
-  const [playlistSelected, setPlayListSelected] = useState(
-    localStorage.getItem("playlist")
-  );
-
-  const tracks = useSelector((state) => state.playlist.tracks);
-  const selectedTrack = useSelector(
-    (state) => state.playlist.currentTrackIndex
-  );
-  const isPlaying = useSelector((state) => state.playlist.isPlaying);
   const dispatch = useDispatch();
+  const [isLoading, setIsLoading] = useState(false);
 
-  const [messageChat, setMessageChat] = useState("");
-  const [messages, setMessages] = useState([]);
-
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isModalOpenFocusTime, setIsModalOpenFocusTime] = useState(false);
-  const [isUser, setIsUser] = useState(false);
-  const [userName, setUsername] = useState("");
-
-  const [toggleScreen, setToggleScreen] = useState(false);
-  const [toggleMixer, setToggleMixer] = useState(false);
-  const [toggleYoutube, setToggleYoutube] = useState(false);
-  const [toggleChat, setToggleChat] = useState(false);
-  const [hiddenYoutube, setHiddenYoutube] = useState(false);
-
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
-
-  const audioRef = useRef(null);
-
-  const handleFetchTracks = () => {
-    dispatch(fetchTracks());
-  };
+  const user = useSelector((state) => state.user);
 
   useEffect(() => {
-    handleFetchTracks();
+    setIsLoading(true);
+    const { storageData, decoded } = handleDecoded();
+    if (decoded?.id) {
+      console.log(decoded);
+      handleGetDetailUser(decoded?.id, storageData);
+    }
+    setIsLoading(false);
   }, []);
 
-  useEffect(() => {
-    const audioElement = audioRef.current;
-    if (audioElement?.paused || isPlaying) {
-      audioElement?.play();
-    } else if (audioElement?.played || isPlaying) {
-      audioElement?.pause();
+  const handleDecoded = () => {
+    let storageData =
+      user?.access_token || localStorage.getItem("access_token");
+    let decoded = {};
+    if (storageData && isJsonString(storageData) && !user?.access_token) {
+      storageData = JSON.parse(storageData);
+      decoded = jwt_decode(storageData);
     }
-  }, [isPlaying, selectedTrack]);
+    return { decoded, storageData };
+  };
 
-  const handleSubmit = (e) => {
-    if (e.keyCode === 13) {
-      if (userName) {
-        setIsUser(true);
-        setIsModalOpen(false);
-      } else {
-        setIsUser(false);
+  UserService.axiosJWT.interceptors.request.use(
+    async (config) => {
+      const currentTime = new Date();
+
+      const { decoded } = handleDecoded();
+      let storageRefreshToken = localStorage.getItem("refresh_token");
+      const refreshToken = JSON.parse(storageRefreshToken);
+      const decodedRefreshToken = jwt_decode(refreshToken);
+      if (decoded?.exp < currentTime.getTime() / 1000) {
+        if (decodedRefreshToken?.exp > currentTime.getTime() / 1000) {
+          const data = await UserService.refreshToken(refreshToken);
+          config.headers["token"] = `Bearer ${data?.access_token}`;
+        } else {
+          await UserService.logoutUser();
+          localStorage.removeItem("access_token");
+          localStorage.removeItem("refresh_token");
+          // message.success("Đăng xuất thành công!");
+          dispatch(resetUser());
+        }
       }
+      return config;
+    },
+    function (error) {
+      return Promise.reject(error);
     }
+  );
+
+  const handleGetDetailUser = async (id, access_token) => {
+    let storageRefreshToken = localStorage.getItem("refresh_token");
+    const refreshToken = JSON.parse(storageRefreshToken);
+    const res = await UserService.getDetailsUser(id, access_token);
+    dispatch(
+      updateUser({
+        ...res?.data,
+        access_token: access_token,
+        refreshToken: refreshToken,
+      })
+    );
   };
 
-  const handleChangeScreen = (item) => {
-    setBgItem(item);
-    localStorage.setItem("bg", item.video);
-    setBgSelected(localStorage.getItem("bg"));
-  };
-
-  const handleToggleYoutube = () => {
-    if (!toggleYoutube) {
-      setToggleYoutube(!toggleYoutube);
-    } else {
-      setHiddenYoutube(!hiddenYoutube);
-    }
-  };
+  console.log(user);
 
   return (
     <>
-      <HeaderComponent
-        audioRef={audioRef}
-        setCurrentTime={setCurrentTime}
-        duration={duration}
-        currentTime={currentTime}
-      />
-      <div className="relative h-screen max-h-screen overflow-hidden w-screen bg-black">
-        <audio
-          className="hidden"
-          src={tracks[selectedTrack]?.url}
-          controls
-          ref={audioRef}
-          onLoadedMetadata={(e) => {
-            setDuration(e.target.duration);
-          }}
-          onTimeUpdate={(e) => {
-            setCurrentTime(e.target.currentTime);
-          }}
-        />
-        <ScreenComponent bgItem={bgItem} bgSelected={bgSelected} />
-        <GreetingComponent />
-        <div>
-          <OptionsComponent
-            userName={userName}
-            handleToggleYoutube={handleToggleYoutube}
-            toggleScreen={toggleScreen}
-            setToggleScreen={setToggleScreen}
-            toggleChat={toggleChat}
-            setToggleChat={setToggleChat}
-            toggleMixer={toggleMixer}
-            setToggleMixer={setToggleMixer}
-            setToggleYoutube={setToggleYoutube}
-            setIsModalOpen={setIsModalOpen}
-            setIsModalOpenFocusTime={setIsModalOpenFocusTime}
-          />
-          <ScreenListComponent
-            handleChangeScreen={handleChangeScreen}
-            bgSelected={bgSelected}
-            toggleScreen={toggleScreen}
-            setToggleScreen={setToggleScreen}
-          />
-          <MixerComponent
-            playlistSelected={playlistSelected}
-            toggleMixer={toggleMixer}
-            setToggleMixer={setToggleMixer}
-          />
-          <YoutubeComponent
-            toggleYoutube={toggleYoutube}
-            setToggleYoutube={setToggleYoutube}
-            setHiddenYoutube={setHiddenYoutube}
-            hiddenYoutube={hiddenYoutube}
-          />
-          <ChatChannelComponent
-            userName={userName}
-            messageChat={messageChat}
-            messages={messages}
-            setMessages={setMessages}
-            setMessageChat={setMessageChat}
-            isUser={isUser}
-            toggleChat={toggleChat}
-            setToggleChat={setToggleChat}
-          />
-
-          <Modal
-            title={null}
-            open={isModalOpen}
-            footer={null}
-            onCancel={() => setIsModalOpen(false)}
-          >
-            <h1 className="text-base font-medium">What's your name?</h1>
-            <div className="mt-5">
-              <input
-                className="w-full outline-none py-1 bg-transparent border-b-2"
-                placeholder="Enter your name to display in chat channel..."
-                type="text"
-                onChange={(e) => setUsername(e.target.value)}
-                onKeyDown={handleSubmit}
-              />
-            </div>
-          </Modal>
-          <FocusTimeComponent
-            isModalOpenFocusTime={isModalOpenFocusTime}
-            setIsModalOpenFocusTime={setIsModalOpenFocusTime}
-          />
-        </div>
-      </div>
+      <Router>
+        <Routes>
+          <Route path="/" element={<Home />}></Route>
+        </Routes>
+      </Router>
     </>
   );
 }
