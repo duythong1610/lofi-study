@@ -15,17 +15,17 @@ const AccountOverviewComponent = ({ setKeySelected }) => {
         />
       </div> */}
       <h1 className="text-xl">{t("profileTitle")}</h1>
-      <div className="flex pb-2 gap-9 border-b-[2px]">
+      <div className="flex pb-2 gap-9">
         <h1 className="text-zinc-300 min-w-[120px]">Tên người dùng:</h1>
         <h1>
           {user.lastName} {user.firstName}
         </h1>
       </div>
-      <div className="flex pb-2 gap-9 border-b-[2px]">
+      <div className="flex pb-2 gap-9">
         <h1 className="text-zinc-300 min-w-[120px]">Email:</h1>
         <h1>{user.email}</h1>
       </div>
-      <div className="flex pb-2 gap-9 border-b-[2px]">
+      <div className="flex pb-2 gap-9">
         <h1 className="text-zinc-300 min-w-[120px]">Giới tính:</h1>
         <h1>Nam</h1>
       </div>
@@ -37,10 +37,13 @@ const AccountOverviewComponent = ({ setKeySelected }) => {
         >
           {t("editProfile")}
         </button> */}
-        <button class="group relative h-12 w-48 overflow-hidden rounded-lg bg-white text-lg shadow">
-          <div class="absolute inset-0 w-0 bg-pink-700 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+        <button
+          class="group relative py-2 px-5 overflow-hidden rounded-lg bg-white shadow"
+          onClick={() => setKeySelected("editProfile")}
+        >
+          <div class="absolute inset-0 w-0 bg-pink-600 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
           <span class="relative text-black group-hover:text-white">
-            Hover me!
+            {t("editProfile")}
           </span>
         </button>
       </div>

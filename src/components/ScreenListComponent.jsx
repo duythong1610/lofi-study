@@ -38,7 +38,7 @@ const ScreenListComponent = ({
               />
             </Tooltip>
           </div>
-          <div className="list flex flex-col gap-4 w-[300px] h-full overflow-auto">
+          <div className="list flex flex-col gap-4 w-[300px] h-full overflow-auto overflow-x-hidden">
             {data?.map((item) => {
               return (
                 <div

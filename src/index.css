@@ -55,7 +55,17 @@
 }
 
 .ant-menu {
-  width: fit-content !important;
+  width: 260px !important;
+}
+.ant-radio-button-wrapper-checked {
+  border-color: #db2777 !important;
+  background: #db2777 !important;
+}
+
+.ant-radio-button-wrapper-checked:not(
+    .ant-radio-button-wrapper-disabled
+  )::before {
+  background-color: transparent !important;
 }
 
 .ant-menu-item {
@@ -146,9 +156,11 @@ input[type="number"]::-webkit-inner-spin-button {
   -webkit-appearance: none;
   appearance: none;
   /* creating a custom design */
-  height: 7px;
-  width: 7px;
+  height: 5px;
+  width: 8px;
+
   background-color: #da2f68;
+
   /*  slider progress trick  */
   box-shadow: -407px 0 0 400px #da2f68;
 }

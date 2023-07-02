@@ -160,7 +160,7 @@ const Home = () => {
             setToggleChat={setToggleChat}
           />
 
-          <Modal
+          {/* <Modal
             title={null}
             open={isModalOpen}
             footer={null}
@@ -176,11 +176,26 @@ const Home = () => {
                 onKeyDown={handleSubmit}
               />
             </div>
-          </Modal>
+          </Modal> */}
           <FocusTimeComponent
             isModalOpenFocusTime={isModalOpenFocusTime}
             setIsModalOpenFocusTime={setIsModalOpenFocusTime}
           />
+          <div className="absolute bottom-[5%] left-[5%] flex items-center">
+            <img
+              src={tracks[selectedTrack]?.background}
+              alt=""
+              className={
+                audioRef.current?.paused
+                  ? "h-12 w-12 rounded-full object-cover"
+                  : "animate-spin-slow h-12 w-12 rounded-full object-cover"
+              }
+            />
+            <div className="bg-white mx-3 h-[1px] w-4"></div>
+            <h1 className="text-white font-semibold">
+              {tracks[selectedTrack]?.playlistName}
+            </h1>
+          </div>
         </div>
       </div>
     </div>

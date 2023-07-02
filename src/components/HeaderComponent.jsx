@@ -1,4 +1,5 @@
 import {
+  CaretDownOutlined,
   CaretRightOutlined,
   EditOutlined,
   FastBackwardOutlined,
@@ -20,12 +21,14 @@ import {
 } from "../redux/slides/playlistSlice";
 import LoginComponent from "./LoginComponent";
 import * as UserService from "../services/UserService";
-import { Menu, Modal, Popover } from "antd";
+import { Popover } from "antd";
 import { resetUser } from "../redux/slides/userSlice";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
-import { getItem } from "../utils/util";
-import AccountOverviewComponent from "./AccountOverviewComponent";
+import UserSettingsComponent from "./UserSettingsComponent";
+import LanguageComponent from "./LanguageComponent";
+import CurrentTime from "./CurrentTime";
+import logo from "../../public/logochill.gif";
 
 const HeaderComponent = ({
   audioRef,
@@ -33,16 +36,20 @@ const HeaderComponent = ({
   duration,
   currentTime,
 }) => {
+  const tracks = useSelector((state) => state.playlist.tracks);
+  const selectedTrack = useSelector(
+    (state) => state.playlist.currentTrackIndex
+  );
+
+  console.log(tracks[selectedTrack]);
   const { t } = useTranslation();
   const isPlaying = useSelector((state) => state.playlist.isPlaying);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
 
-  const [openKeys, setOpenKeys] = useState(["user"]);
-  const [keySelected, setKeySelected] = useState("accountOverview");
-
   const dispatch = useDispatch();
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isUserSettingsOpen, setIsUserSettingsOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
 
   console.log(isPlaying);
@@ -124,9 +131,9 @@ const HeaderComponent = ({
             </div>
           </div>
           <div
-            // onClick={() => {
-            //   navigate("/thong-tin-tai-khoan");
-            // }}
+            onClick={() => {
+              setIsUserSettingsOpen(true);
+            }}
             className="py-2 px-3 cursor-pointer hover:bg-pink-700 w-full flex gap-2 items-center"
           >
             <SettingOutlined />
@@ -144,50 +151,39 @@ const HeaderComponent = ({
       )}
     </>
   );
+  const content1 = (
+    <>
+      <div className="hidden md:block w-full overflow-hidden text-white">
+        <div className="py-2 px-3 flex items-center gap-3 mb-3">
+          <LanguageComponent />
+        </div>
+      </div>
+    </>
+  );
 
-  const renderPage = (key) => {
-    switch (key) {
-      case "accountOverview":
-        return <AccountOverviewComponent setKeySelected={setKeySelected} />;
-      case "editProfile":
-        return <div>kkk2</div>;
-      case "language":
-        return <div>kkk 3</div>;
-      default:
-        return;
-    }
-  };
-  const onOpenChange = (keys) => {
-    const latestOpenKey = keys.find((key) => openKeys.indexOf(key) === -1);
-    if (rootSubmenuKeys.indexOf(latestOpenKey) === -1) {
-      setOpenKeys(keys);
-    } else {
-      setOpenKeys(latestOpenKey ? [latestOpenKey] : []);
-    }
-  };
+  const content2 = (
+    <>
+      <div className="hidden md:block overflow-hidden text-white py-1 px-2 w-[300px]">
+        <div className="range flex items-center text-white text-sm ">
+          <span className="min-w-[35px]">{formatTime(currentTime)}</span>
+          <input
+            className="slider-timer mx-2"
+            type="range"
+            min={0}
+            max={duration}
+            value={currentTime}
+            onChange={(e) => {
+              audioRef.current.currentTime = parseFloat(e.target.value);
+              setCurrentTime(e.target.value);
+            }}
+          />
+          <span className="w-fit">{formatTime(duration)}</span>
+        </div>
+      </div>
+    </>
+  );
 
-  const handleOnClick = ({ key }) => {
-    setKeySelected(key);
-  };
-
-  const items = [
-    getItem(
-      t("accountOverview"),
-      "accountOverview",
-      <HomeOutlined className="!text-base" />
-    ),
-    getItem(
-      t("editProfile"),
-      "editProfile",
-      <EditOutlined className="!text-base" />
-    ),
-    getItem(
-      t("changePassword"),
-      "changePassword",
-      <LockFilled className="!text-base" />
-    ),
-    getItem(t("language"), "language", <UserOutlined />),
-  ];
+  console.log("re-render");
   return (
     <div>
       <LoginComponent
@@ -196,102 +192,98 @@ const HeaderComponent = ({
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
-      <div className="fixed flex top-0 left-0 z-[5] bg-transparent w-full py-3 px-[5%] h-32">
-        <div className="absolute top-[40px] w-[400px] left-[50%] translate-x-[-50%] translate-y-[-50%] bg-black/60 backdrop-blur-sm  px-4 py-1 rounded-xl">
-          <div className="flex items-center gap-5 text-2xl justify-center">
-            <FastBackwardOutlined
-              className="text-white cursor-pointer"
-              onClick={() => handlePrev()}
-            />
-            {isPlaying ? (
-              <PauseOutlined
-                className="text-white cursor-pointer w-[20px]"
-                onClick={() => handleMusic()}
-              />
-            ) : (
-              <CaretRightOutlined
-                className="text-white cursor-pointer w-[20px]"
-                onClick={() => handleMusic()}
-              />
-            )}
+      <div className="fixed top-0 left-0 right-0 flex h-32 z-[5] px-[3vw] bg-transparent w-full ">
+        <div className="relative h-full w-full mt-5">
+          <div className="absolute left-0 -top-5">
+            <img src={logo} alt="" className="w-28 h-28" />
+          </div>
+          <div className="absolute right-0 flex items-center gap-3">
+            <div className="bg-black/60 backdrop-blur-sm  px-4 py-1 rounded-xl">
+              <CurrentTime />
+            </div>
+            <div className="bg-black/60 backdrop-blur-sm  px-4 py-1 rounded-xl">
+              <div className="flex items-center gap-3 text-2xl justify-center">
+                <FastBackwardOutlined
+                  className="text-white cursor-pointer"
+                  onClick={() => handlePrev()}
+                />
+                {isPlaying ? (
+                  <PauseOutlined
+                    className="text-white cursor-pointer w-[20px]"
+                    onClick={() => handleMusic()}
+                  />
+                ) : (
+                  <CaretRightOutlined
+                    className="text-white cursor-pointer w-[20px]"
+                    onClick={() => handleMusic()}
+                  />
+                )}
 
-            <FastForwardOutlined
-              className="text-white cursor-pointer"
-              onClick={() => handleNext()}
-            />
-          </div>
-          <div className="range flex items-center gap-2 text-white text-sm">
-            <span>{formatTime(currentTime)}</span>
-            <input
-              className="slider-timer"
-              type="range"
-              min={0}
-              max={duration}
-              value={currentTime}
-              onChange={(e) => {
-                audioRef.current.currentTime = parseFloat(e.target.value);
-                setCurrentTime(e.target.value);
-              }}
-            />
-            <span>{formatTime(duration)}</span>
-          </div>
-        </div>
-        <div className="absolute right-[5%] flex items-center gap-3">
-          <Popover
-            trigger={["click"]}
-            content={content}
-            placement="bottomLeft"
-            style={{ padding: "0px" }}
-            className="hidden md:block "
-          >
-            <div
-              className="!flex p-3 bg-black/60 backdrop-blur-sm  rounded-full cursor-pointer "
-              onClick={() => handleLogin()}
+                <FastForwardOutlined
+                  className="text-white cursor-pointer"
+                  onClick={() => handleNext()}
+                />
+                <Popover
+                  trigger={["click"]}
+                  content={content2}
+                  placement="bottomRight"
+                  style={{ padding: "0px" }}
+                  className="hidden md:block "
+                >
+                  <CaretDownOutlined className="text-white cursor-pointer text-base" />
+                </Popover>
+              </div>
+            </div>
+
+            <Popover
+              trigger={["click"]}
+              content={content1}
+              placement="bottomLeft"
+              style={{ padding: "0px" }}
+              className="hidden md:block "
             >
-              <UserOutlined className="text-white" />
-              {/* <h1 className="text-white text-base">
+              <div
+                className="!flex p-2 bg-black/60 backdrop-blur-sm  rounded-full cursor-pointer "
+                // onClick={() => handleLogin()}
+              >
+                <SettingOutlined className="text-white" />
+                {/* <h1 className="text-white text-base">
                 {user.id ? `${t("helloTitle")}, ` : `${t("loginTitle")}`}
                 <span className="hover:text-pink-600  font-bold">
                   {user.firstName}
                 </span>
               </h1> */}
-            </div>
-          </Popover>
-
-          <Modal
-            bodyStyle={{ minHeight: "70vh" }}
-            width={"50vw"}
-            title={null}
-            open={false}
-            footer={null}
-            // onCancel={() => setIsModalOpenFocusTime(false)}
-          >
-            <div
-              style={{
-                display: "flex",
-              }}
-            >
-              <Menu
-                selectedKeys={keySelected}
-                // defaultOpenKeys={"accountOverview"}
-                defaultSelectedKeys={keySelected}
-                // openKeys={openKeys}
-                onClick={handleOnClick}
-                style={{
-                  width: 256,
-                  background: "transparent",
-                  color: "#FFF",
-                }}
-                onOpenChange={onOpenChange}
-                mode="inline"
-                items={items}
-              />
-
-              <div style={{ flex: 1, padding: "15px" }}>
-                {renderPage(keySelected)}
               </div>
-            </div>
-          </Modal>
+            </Popover>
+
+            <Popover
+              trigger={["hover", "click"]}
+              content={content}
+              placement="bottomRight"
+              style={{ padding: "0px" }}
+              className="hidden md:block "
+            >
+              <div
+                className="!flex p-2 bg-black/60 backdrop-blur-sm  rounded-full cursor-pointer "
+                onClick={() => handleLogin()}
+              >
+                <UserOutlined className="text-white" />
+                {/* <h1 className="text-white text-base">
+                {user.id ? `${t("helloTitle")}, ` : `${t("loginTitle")}`}
+                <span className="hover:text-pink-600  font-bold">
+                  {user.firstName}
+                </span>
+              </h1> */}
+              </div>
+            </Popover>
+
+            {isUserSettingsOpen && (
+              <UserSettingsComponent
+                isUserSettingsOpen={isUserSettingsOpen}
+                setIsUserSettingsOpen={setIsUserSettingsOpen}
+              />
+            )}
+          </div>
         </div>
       </div>
     </div>

@@ -80,13 +80,13 @@
   {
     "id": 14,
     "soundName": "Wind",
-    "soundCode": "Ocean",
+    "soundCode": "wind",
     "url": "https://storage.googleapis.com/my-image-products/wind.mp3"
   },
   {
     "id": 15,
     "soundName": "Fireplace",
-    "soundCode": "people_talking",
+    "soundCode": "fireplace",
     "url": "https://storage.googleapis.com/my-image-products/fireplace.mp3"
   },
   {

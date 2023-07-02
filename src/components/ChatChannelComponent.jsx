@@ -7,6 +7,7 @@ const socket = io.connect("https://socket-server-2cuv.onrender.com");
 import EmojiPicker, { EmojiStyle, Emoji } from "emoji-picker-react";
 import data from "@emoji-mart/data/sets/14/apple.json";
 import Picker from "@emoji-mart/react";
+import { useSelector } from "react-redux";
 
 const ChatChannelComponent = ({
   userName,
@@ -18,6 +19,7 @@ const ChatChannelComponent = ({
   setMessageChat,
   setMessages,
 }) => {
+  const user = useSelector((state) => state.user);
   const messagesEndRef = useRef(null);
   const [isOpenEmoji, setIsOpenEmoji] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState("");
@@ -91,9 +93,9 @@ const ChatChannelComponent = ({
   const sendMessage = (e) => {
     if (e.keyCode === 13 && messageChat.trim()) {
       socket.emit("send_message", {
-        userId: "6499a3252327a10edeb889b5",
+        userId: user.id,
         messageChat,
-        userName,
+        userName: `${user.firstName} ${user.lastName}`,
         timeChat: getCurrentSocketTime(),
       });
       setMessageChat("");
@@ -121,7 +123,7 @@ const ChatChannelComponent = ({
   return (
     <div>
       {" "}
-      {toggleChat && isUser && (
+      {toggleChat && user.id && (
         <Draggable scale={1}>
           <div className="pl-4 py-4 absolute flex w-[400px] flex-col gap-4 top-0 bottom-0 left-[152px] m-auto rounded-xl bg-black/60 max-h-[600px] backdrop-blur-sm z-20 cursor-move">
             <div className="flex justify-between items-center">
@@ -137,18 +139,14 @@ const ChatChannelComponent = ({
               <div className="max-h-full overflow-y-auto overflow-x-hidden">
                 {messages?.map((mess, index) => {
                   return (
-                    <div key={index} className="flex gap-2 w-full">
-                      <div className="whitespace-nowrap flex gap-2">
-                        <p className="text-zinc-300 text-sm">{mess.timeChat}</p>
-                        <h1 className="text-zinc-300 text-sm">
-                          {mess.userName}:
-                        </h1>
-                      </div>
-                      {/* <div className="flex-shrink break-all"> */}
-                      <span className="text-white text-sm break-all">
-                        {mess.messageChat}
+                    <div
+                      key={index}
+                      className=" text-sm gap-2 w-full text-white break-words "
+                    >
+                      <span className="text-zinc-300 mr-2">
+                        {mess.timeChat} {mess.userName}:
                       </span>
-                      {/* </div> */}
+                      {mess.messageChat}
                     </div>
                   );
                 })}{" "}
