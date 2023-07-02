@@ -10,7 +10,7 @@ export default defineConfig({
   },
   proxy: {
     "/socket.io": {
-      target: "https://chill-october16th.onrender.com",
+      target: "https://socket-server-ay7s.onrender.com",
       changeOrigin: true,
       secure: false,
       ws: true,

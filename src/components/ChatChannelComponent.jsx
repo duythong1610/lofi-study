@@ -3,7 +3,7 @@ import { Tooltip } from "antd";
 import React, { useEffect, useRef, useState } from "react";
 import Draggable from "react-draggable";
 import { io } from "socket.io-client";
-const socket = io.connect("https://socket-server-2cuv.onrender.com");
+const socket = io.connect(import.meta.env.VITE_API_SOCKET_KEY);
 import EmojiPicker, { EmojiStyle, Emoji } from "emoji-picker-react";
 import data from "@emoji-mart/data/sets/14/apple.json";
 import Picker from "@emoji-mart/react";
