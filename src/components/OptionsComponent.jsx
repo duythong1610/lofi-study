@@ -58,7 +58,7 @@ const OptionsComponent = ({
           // style={{
           //   left: 84,
           // }}
-          className="bg-black/60 backdrop-blur-md left-[5%] flex flex-col justify-around rounded-2xl p-0 lg:p-2 w-fit h-fit top-1/2 -translate-x-[50%] -translate-y-[50%] mb-0"
+          className="bg-black/60 backdrop-blur-md left-[5%] flex flex-col justify-around rounded-2xl p-1 lg:p-2 w-fit h-fit top-1/2 -translate-x-[50%] -translate-y-[50%] mb-0"
         >
           <Tooltip placement="right" title={t("mixerTitle")}>
             <FloatButton
