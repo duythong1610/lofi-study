@@ -8,7 +8,7 @@ const ScreenComponent = ({ bgItem, bgSelected }) => {
         <div>
           <video
             key={bgItem?.id}
-            className="fixed right-0 bottom-0 min-w-full min-h-screen transition-all object-cover"
+            className="fixed right-0 bottom-0 min-w-full min-h-screen max-w transition-all object-cover"
             autoPlay={true}
             muted
             loop

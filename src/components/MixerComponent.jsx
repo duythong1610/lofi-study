@@ -188,11 +188,11 @@ const MixerComponent = ({ toggleMixer, setToggleMixer }) => {
         //     Your browser does not support the audio element.
         //   </audio>
         // </div>
-        <div className="pl-4 pb-4 pt-0 absolute flex flex-col top-0 bottom-0 right-[5%] m-auto rounded-xl bg-black/60 max-h-[90%] lg:max-h-[600px] backdrop-blur-sm z-20">
-          <div className="text-right py-2">
+        <div className="px-4 py-4  absolute flex flex-col top-0 bottom-0 right-[5%] m-auto rounded-xl bg-black/60 max-h-[90%] lg:max-h-[600px] backdrop-blur-sm z-20">
+          <div className="text-right">
             <Tooltip title="Hide">
               <CloseCircleOutlined
-                className="pr-4 text-white text-xl cursor-pointer"
+                className="text-white text-xl cursor-pointer"
                 onClick={() => setToggleMixer(!toggleMixer)}
               />
             </Tooltip>
@@ -207,8 +207,8 @@ const MixerComponent = ({ toggleMixer, setToggleMixer }) => {
                     key={item.id}
                     className={
                       index === selectedTrack
-                        ? "border-[2px] border-white rounded-xl item relative w-full min-h-[104px] lg:min-h-[160px] cursor-pointer"
-                        : "item relative min-h-[104px] lg:min-h-[160px] w-full cursor-pointer opacity-70"
+                        ? "border-[2px] border-white rounded-xl item relative w-full min-h-[114px] lg:min-h-[170px] lg:max-h-[170px] cursor-pointer  overflow-hidden"
+                        : "item relative min-h-[114px] lg:min-h-[170px] lg:max-h-[170px] w-full cursor-pointer opacity-70"
                     }
                     onClick={() => handleChangePlaylist(item, index)}
                   >

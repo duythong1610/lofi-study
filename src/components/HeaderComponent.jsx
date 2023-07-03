@@ -201,7 +201,7 @@ const HeaderComponent = ({
             <img
               src={logo}
               alt=""
-              className="md:w-20 md:h-20 lg:w-28 lg:h-28"
+              className="w-20 h-20 md:w-20 md:h-20 lg:w-28 lg:h-28"
             />
           </div>
           <div className="absolute right-0 flex items-center">

@@ -84,7 +84,7 @@ const LoginComponent = ({
         open={isModalOpen && !user.id}
         footer={null}
         onCancel={() => setIsModalOpen(false)}
-        className="min-h-[400px]"
+        // className="min-h-[400px]"
       >
         {isLogin ? (
           <LoginForm setIsLogin={setIsLogin} setIsModalOpen={setIsModalOpen} />
