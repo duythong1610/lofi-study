@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const CurrentTime = () => {
   const [currentTime, setCurrentTime] = useState(new Date());
@@ -26,7 +27,9 @@ const CurrentTime = () => {
   };
   return (
     <div>
-      <p className="text-white font-medium">{formatTime(currentTime)}</p>
+      <p className="text-white font-medium md:text-sm lg:text-base">
+        {formatTime(currentTime)}
+      </p>
     </div>
   );
 };

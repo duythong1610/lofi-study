@@ -148,26 +148,26 @@ const FocusTimeComponent = ({
         <Draggable positionOffset={{ x: "-50%", y: "-50%" }}>
           <div className="absolute top-1/2 left-1/2 m-0 -translate-x-[50%] -translate-y-[50%] z-10">
             <div>
-              <p className="text-white font-semibold text-xl neonText mb-2">
+              <p className="text-white font-semibold md:text-base lg:text-xl neonText mb-2">
                 You are {listTask[0].taskName} - Time left:
               </p>
             </div>
-            <div className=" bg-black/60 backdrop:blur-sm p-5 rounded-xl">
+            <div className=" bg-black/30 backdrop:blur-sm md:py-2 md:px-5 lg:p-5 rounded-xl">
               <div className="font-bold cursor-move select-none flex items-center gap-3 font-digital-7">
-                <h1 className="text-white text-8xl neonText text-center w-[160px] font-digital-7">
+                <h1 className="text-white md:text-6xl lg:text-8xl neonText text-center md:w-[100px] lg:w-[160px] font-digital-7">
                   {formatTime(countdown).hours}
                 </h1>
-                <span className="text-white text-8xl neonText text-center mb-5 font-digital-7 ">
+                <span className="text-white md:text-6xl lg:text-8xl neonText text-center md:mb-2 lg:mb-5 font-digital-7 ">
                   :
                 </span>
 
-                <h1 className="text-white text-8xl neonText text-center w-[160px] font-digital-7">
+                <h1 className="text-white md:text-6xl lg:text-8xl neonText text-center md:w-[100px] lg:w-[160px] font-digital-7">
                   {formatTime(countdown).minutes}
                 </h1>
-                <span className="text-white text-8xl neonText text-center mb-5 font-digital-7">
+                <span className="text-white md:text-6xl lg:text-8xl neonText text-center md:mb-2 lg:mb-5 font-digital-7">
                   :
                 </span>
-                <h1 className="text-white text-8xl neonText text-center w-[160px] font-digital-7">
+                <h1 className="text-white md:text-6xl lg:text-8xl neonText text-center md:w-[100px] lg:w-[160px] font-digital-7">
                   {formatTime(countdown).seconds}
                 </h1>
               </div>

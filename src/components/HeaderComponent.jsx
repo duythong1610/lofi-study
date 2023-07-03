@@ -28,9 +28,12 @@ import { useTranslation } from "react-i18next";
 import UserSettingsComponent from "./UserSettingsComponent";
 import LanguageComponent from "./LanguageComponent";
 import CurrentTime from "./CurrentTime";
-import logo from "../../public/logochill.gif";
+import logo from "../assets/img/logochill.gif";
+import { showIsGreeting } from "../redux/slides/settingsSlice";
 
 const HeaderComponent = ({
+  isShowGreeting,
+  setIsShowGreeting,
   audioRef,
   setCurrentTime,
   duration,
@@ -112,7 +115,7 @@ const HeaderComponent = ({
   const content = (
     <>
       {user.id && (
-        <div className="hidden md:block w-full overflow-hidden text-white">
+        <div className="md:block w-full overflow-hidden text-white">
           <div className="py-2 px-3 flex items-center gap-3 mb-3">
             <div>
               <img
@@ -153,7 +156,7 @@ const HeaderComponent = ({
   );
   const content1 = (
     <>
-      <div className="hidden md:block w-full overflow-hidden text-white">
+      <div className="md:block w-full overflow-hidden text-white">
         <div className="py-2 px-3 flex items-center gap-3 mb-3">
           <LanguageComponent />
         </div>
@@ -163,7 +166,7 @@ const HeaderComponent = ({
 
   const content2 = (
     <>
-      <div className="hidden md:block overflow-hidden text-white py-1 px-2 w-[300px]">
+      <div className="md:block overflow-hidden text-white py-1 px-2 w-[300px]">
         <div className="range flex items-center text-white text-sm ">
           <span className="min-w-[35px]">{formatTime(currentTime)}</span>
           <input
@@ -192,35 +195,42 @@ const HeaderComponent = ({
         isModalOpen={isModalOpen}
         setIsModalOpen={setIsModalOpen}
       />
-      <div className="fixed top-0 left-0 right-0 flex h-32 z-[5] px-[3vw] bg-transparent w-full ">
+      <div className="fixed top-0 left-0 right-0 flex h-32 z-[5] px-[5%] bg-transparent w-full ">
         <div className="relative h-full w-full mt-5">
-          <div className="absolute left-0 -top-5">
-            <img src={logo} alt="" className="w-28 h-28" />
+          <div className="absolute left-0 md:-top-6 lg:-top-9">
+            <img
+              src={logo}
+              alt=""
+              className="md:w-20 md:h-20 lg:w-28 lg:h-28"
+            />
           </div>
-          <div className="absolute right-0 flex items-center gap-3">
-            <div className="bg-black/60 backdrop-blur-sm  px-4 py-1 rounded-xl">
+          <div className="absolute right-0 flex items-center">
+            <div
+              className="bg-black/60 backdrop-blur-sm  px-4 md:py-1 lg:py-1 rounded-xl cursor-pointer mr-3"
+              onClick={() => dispatch(showIsGreeting())}
+            >
               <CurrentTime />
             </div>
-            <div className="bg-black/60 backdrop-blur-sm  px-4 py-1 rounded-xl">
-              <div className="flex items-center gap-3 text-2xl justify-center">
+            <div className="bg-black/60 backdrop-blur-sm  px-4 md:py-[2px] lg:py-1 rounded-xl mr-3">
+              <div className="flex items-center md: gap-1 lg:gap-3 text-2xl justify-center">
                 <FastBackwardOutlined
-                  className="text-white cursor-pointer"
+                  className="text-white cursor-pointer md:text-xl lg:text-2xl md:leading-3 lg:leading-4 !block m-auto"
                   onClick={() => handlePrev()}
                 />
                 {isPlaying ? (
                   <PauseOutlined
-                    className="text-white cursor-pointer w-[20px]"
+                    className="text-white cursor-pointer w-[20px] md:text-lg lg:text-2xl md:leading-3 lg:leading-4 !block m-auto"
                     onClick={() => handleMusic()}
                   />
                 ) : (
                   <CaretRightOutlined
-                    className="text-white cursor-pointer w-[20px]"
+                    className="text-white cursor-pointer w-[20px] md:text-lg lg:text-2xl md:leading-3 lg:leading-4 !block m-auto"
                     onClick={() => handleMusic()}
                   />
                 )}
 
                 <FastForwardOutlined
-                  className="text-white cursor-pointer"
+                  className="text-white cursor-pointer md:text-lg lg:text-2xl md:leading-3 lg:leading-4 !block m-auto"
                   onClick={() => handleNext()}
                 />
                 <Popover
@@ -228,7 +238,7 @@ const HeaderComponent = ({
                   content={content2}
                   placement="bottomRight"
                   style={{ padding: "0px" }}
-                  className="hidden md:block "
+                  className="md:block "
                 >
                   <CaretDownOutlined className="text-white cursor-pointer text-base" />
                 </Popover>
@@ -243,10 +253,10 @@ const HeaderComponent = ({
               className="hidden md:block "
             >
               <div
-                className="!flex p-2 bg-black/60 backdrop-blur-sm  rounded-full cursor-pointer "
+                className="!flex md:w-7 md:h-7 lg:w-8 lg:h-8 bg-black/60 backdrop-blur-sm  rounded-full cursor-pointer mr-3"
                 // onClick={() => handleLogin()}
               >
-                <SettingOutlined className="text-white" />
+                <SettingOutlined className="text-white md:text-base lg:text-lg md:leading-4 lg:leading-5 !block m-auto" />
                 {/* <h1 className="text-white text-base">
                 {user.id ? `${t("helloTitle")}, ` : `${t("loginTitle")}`}
                 <span className="hover:text-pink-600  font-bold">
@@ -261,13 +271,13 @@ const HeaderComponent = ({
               content={content}
               placement="bottomRight"
               style={{ padding: "0px" }}
-              className="hidden md:block "
+              className="md:block "
             >
               <div
-                className="!flex p-2 bg-black/60 backdrop-blur-sm  rounded-full cursor-pointer "
+                className="!flex md:w-7 md:h-7 lg:w-8 lg:h-8 bg-black/60 backdrop-blur-sm  rounded-full cursor-pointer "
                 onClick={() => handleLogin()}
               >
-                <UserOutlined className="text-white" />
+                <UserOutlined className="text-white md:text-base lg:text-lg md:leading-4 lg:leading-5 !block m-auto" />
                 {/* <h1 className="text-white text-base">
                 {user.id ? `${t("helloTitle")}, ` : `${t("loginTitle")}`}
                 <span className="hover:text-pink-600  font-bold">

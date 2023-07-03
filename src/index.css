@@ -8,6 +8,7 @@
   font-family: "Poppins", sans-serif;
   scroll-behavior: smooth;
   box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .font-digital-7 {
@@ -57,6 +58,7 @@
 .ant-menu {
   width: 260px !important;
 }
+
 .ant-radio-button-wrapper-checked {
   border-color: #db2777 !important;
   background: #db2777 !important;

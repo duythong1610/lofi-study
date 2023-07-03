@@ -188,7 +188,7 @@ const MixerComponent = ({ toggleMixer, setToggleMixer }) => {
         //     Your browser does not support the audio element.
         //   </audio>
         // </div>
-        <div className="pl-4 pb-4 pt-0 absolute flex flex-col  top-0 bottom-0 right-[calc(5%+50px)] m-auto rounded-xl bg-black/60 max-h-[600px] backdrop-blur-sm z-20">
+        <div className="pl-4 pb-4 pt-0 absolute flex flex-col top-0 bottom-0 right-[5%] m-auto rounded-xl bg-black/60 max-h-[90%] lg:max-h-[600px] backdrop-blur-sm z-20">
           <div className="text-right py-2">
             <Tooltip title="Hide">
               <CloseCircleOutlined
@@ -197,8 +197,8 @@ const MixerComponent = ({ toggleMixer, setToggleMixer }) => {
               />
             </Tooltip>
           </div>
-          <div className="h-full overflow-auto overflow-x-hidden w-[300px]">
-            <div className="list flex flex-col gap-4 w-full">
+          <div className="h-full overflow-auto overflow-x-hidden w-[200px] lg:w-[300px]">
+            <div className="list flex flex-col gap-2 lg:gap-4 w-full">
               <h1 className="text-white mb-0 text-base font-bold">Playlist:</h1>
 
               {tracks?.map((item, index) => {
@@ -207,8 +207,8 @@ const MixerComponent = ({ toggleMixer, setToggleMixer }) => {
                     key={item.id}
                     className={
                       index === selectedTrack
-                        ? "border-[2px] border-white rounded-xl item relative w-full min-h-[160px] cursor-pointer"
-                        : "item relative min-h-[160px] w-full cursor-pointer opacity-70"
+                        ? "border-[2px] border-white rounded-xl item relative w-full min-h-[104px] lg:min-h-[160px] cursor-pointer"
+                        : "item relative min-h-[104px] lg:min-h-[160px] w-full cursor-pointer opacity-70"
                     }
                     onClick={() => handleChangePlaylist(item, index)}
                   >
@@ -217,9 +217,9 @@ const MixerComponent = ({ toggleMixer, setToggleMixer }) => {
                       effect="blur"
                       src={item.background}
                       alt=""
-                      className="w-full object-cover rounded-xl"
+                      className="w-full object-cover rounded-xl !inline-block"
                     />
-                    <h1 className="text-white text-3xl whitespace-nowrap font-semibold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 !opacity-100">
+                    <h1 className="text-white text-lg lg:text-3xl whitespace-nowrap font-semibold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 !opacity-100">
                       {item.playlistName}
                     </h1>
                   </div>
@@ -227,18 +227,18 @@ const MixerComponent = ({ toggleMixer, setToggleMixer }) => {
               })}
             </div>
             <div className="flex flex-col gap-4 w-full ">
-              <h1 className="text-white mb-0 text-base font-bold mt-5">
+              <h1 className="text-white mb-0 text-sm lg:text-base font-bold mt-5">
                 {t("allSounds")}:
               </h1>
               {sounds?.map((item, index) => {
                 return (
                   <div key={item.id}>
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full justify-between gap-2 lg:gap-0">
                       {/* <button onClick={() => handleAudio()}>
                       {!isPlaying ? "Phát" : "Dừng"}
                     </button> */}
                       <div className="w-[120px]">
-                        <h1 className="text-zinc-300 text-sm font-medium">
+                        <h1 className="text-zinc-300 text-xs lg:text-sm font-medium line-clamp-1">
                           {t(item.soundCode)}
                         </h1>
                       </div>

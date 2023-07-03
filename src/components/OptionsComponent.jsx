@@ -55,39 +55,42 @@ const OptionsComponent = ({
         // style={{
         //   left: 84,
         // }}
-        className="bg-black/60 backdrop-blur-md left-[5%] flex flex-col justify-around rounded-2xl p-2 w-fit h-fit top-1/2 -translate-x-[50%] -translate-y-[50%]"
+        className="bg-black/60 backdrop-blur-md left-[5%] flex flex-col justify-around rounded-2xl p-0 lg:p-2 w-fit h-fit top-1/2 -translate-x-[50%] -translate-y-[50%] mb-0"
       >
         <Tooltip placement="right" title={t("mixerTitle")}>
           <FloatButton
-            icon={<SlidersOutlined />}
-            className="!transition-none hover:!text-white"
+            icon={<SlidersOutlined className="lg:text-lg md:text-base" />}
+            className="!transition-none hover:!text-white !mb-1 lg:!mb-4"
             onClick={() => setToggleMixer(!toggleMixer)}
           />
         </Tooltip>
         <Tooltip placement="right" title={t("screenTitle")}>
           <FloatButton
-            icon={<PictureOutlined />}
-            className="!transition-none hover:!text-white"
+            icon={<PictureOutlined className="lg:text-lg md:text-base" />}
+            className="!transition-none hover:!text-white !mb-1 lg:!mb-4"
             onClick={() => setToggleScreen(!toggleScreen)}
           />
         </Tooltip>
 
         <Tooltip placement="right" title={t("timerTitle")}>
           <FloatButton
-            icon={<ClockCircleOutlined />}
+            className="!mb-1 lg:!mb-4"
+            icon={<ClockCircleOutlined className="lg:text-lg md:text-base" />}
             onClick={() => setIsModalOpenFocusTime(true)}
           />
         </Tooltip>
         <Tooltip placement="right" title={t("youtubeTitle")}>
           <FloatButton
-            icon={<YoutubeOutlined />}
+            className="!mb-1 lg:!mb-4"
+            icon={<YoutubeOutlined className="lg:text-lg md:text-base" />}
             onClick={() => handleToggleYoutube()}
           />
         </Tooltip>
 
         <Tooltip placement="right" title={t("chatChannelTitle")}>
           <FloatButton
-            icon={<CommentOutlined />}
+            className="!mb-1 lg:!mb-4"
+            icon={<CommentOutlined className="lg:text-lg md:text-base" />}
             onClick={() => {
               setToggleChat(!toggleChat);
               if (!userName) {

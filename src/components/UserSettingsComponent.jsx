@@ -71,8 +71,9 @@ const UserSettingsComponent = ({
     <div>
       {" "}
       <Modal
+        width={"700px"}
+         className=""
         bodyStyle={{ minHeight: "70vh" }}
-        width={"50vw"}
         title={null}
         open={isUserSettingsOpen}
         footer={null}

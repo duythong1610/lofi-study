@@ -41,6 +41,7 @@ const Home = () => {
   const [isModalOpenFocusTime, setIsModalOpenFocusTime] = useState(false);
   const [isUser, setIsUser] = useState(false);
   const [userName, setUsername] = useState("");
+  const [isShowGreeting, setIsShowGreeting] = useState(false);
 
   const [toggleScreen, setToggleScreen] = useState(false);
   const [toggleMixer, setToggleMixer] = useState(false);
@@ -98,6 +99,8 @@ const Home = () => {
     <div>
       {" "}
       <HeaderComponent
+        isShowGreeting={isShowGreeting}
+        setIsShowGreeting={setIsShowGreeting}
         audioRef={audioRef}
         setCurrentTime={setCurrentTime}
         duration={duration}
@@ -117,7 +120,10 @@ const Home = () => {
           }}
         />
         <ScreenComponent bgItem={bgItem} bgSelected={bgSelected} />
-        <GreetingComponent />
+        <GreetingComponent
+          isShowGreeting={isShowGreeting}
+          setIsShowGreeting={setIsShowGreeting}
+        />
         <div>
           <OptionsComponent
             userName={userName}
@@ -181,21 +187,23 @@ const Home = () => {
             isModalOpenFocusTime={isModalOpenFocusTime}
             setIsModalOpenFocusTime={setIsModalOpenFocusTime}
           />
-          <div className="absolute bottom-[5%] left-[5%] flex items-center">
-            <img
-              src={tracks[selectedTrack]?.background}
-              alt=""
-              className={
-                audioRef.current?.paused
-                  ? "h-12 w-12 rounded-full object-cover"
-                  : "animate-spin-slow h-12 w-12 rounded-full object-cover"
-              }
-            />
-            <div className="bg-white mx-3 h-[1px] w-4"></div>
-            <h1 className="text-white font-semibold">
-              {tracks[selectedTrack]?.playlistName}
-            </h1>
-          </div>
+          {!audioRef.current?.paused && (
+            <div className="absolute bottom-[5%] left-[5%] flex items-center">
+              <img
+                src={tracks[selectedTrack]?.background}
+                alt=""
+                className={
+                  audioRef.current?.paused
+                    ? "md:h-8 md:w-8 lg:h-12 lg:w-12 rounded-full object-cover"
+                    : "animate-spin-slow md:h-8 md:w-8 h-12 w-12 rounded-full object-cover"
+                }
+              />
+              <div className="bg-white mx-3 h-[1px] w-4"></div>
+              <h1 className="text-white font-semibold md:text-xs lg:text-base">
+                {tracks[selectedTrack]?.playlistName}
+              </h1>
+            </div>
+          )}
         </div>
       </div>
     </div>

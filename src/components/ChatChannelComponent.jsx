@@ -8,6 +8,7 @@ import EmojiPicker, { EmojiStyle, Emoji } from "emoji-picker-react";
 import data from "@emoji-mart/data/sets/14/apple.json";
 import Picker from "@emoji-mart/react";
 import { useSelector } from "react-redux";
+import { useTranslation } from "react-i18next";
 
 const ChatChannelComponent = ({
   userName,
@@ -20,6 +21,7 @@ const ChatChannelComponent = ({
   setMessages,
 }) => {
   const user = useSelector((state) => state.user);
+  const { t } = useTranslation();
   const messagesEndRef = useRef(null);
   const [isOpenEmoji, setIsOpenEmoji] = useState(false);
   const [selectedEmoji, setSelectedEmoji] = useState("");
@@ -124,13 +126,15 @@ const ChatChannelComponent = ({
     <div>
       {" "}
       {toggleChat && user.id && (
-        <Draggable scale={1}>
-          <div className="pl-4 py-4 absolute flex w-[400px] flex-col gap-4 top-0 bottom-0 left-[152px] m-auto rounded-xl bg-black/60 max-h-[600px] backdrop-blur-sm z-20 cursor-move">
-            <div className="flex justify-between items-center">
-              <h1 className="text-white font-semibold">Chat Channel</h1>
-              <Tooltip title="Close">
+        <Draggable scale={1} handle=".handle" cancel=".close">
+          <div className="pl-4 py-4 absolute flex w-[70%] md:w-[400px] flex-col gap-4 top-0 bottom-0 md:left-[calc(5%+50px)] m-auto rounded-xl bg-black/60 max-h-[600px] backdrop-blur-sm z-20">
+            <div className="handle flex justify-between items-center cursor-move">
+              <h1 className="text-white font-semibold ">
+                {t("chatChannelTitle")}
+              </h1>
+              <Tooltip title="Close" className="close">
                 <CloseCircleOutlined
-                  className="pr-4 text-white text-xl cursor-pointer"
+                  className="close pr-4 text-white text-xl cursor-pointer"
                   onClick={() => setToggleChat(!toggleChat)}
                 />
               </Tooltip>
@@ -141,7 +145,7 @@ const ChatChannelComponent = ({
                   return (
                     <div
                       key={index}
-                      className=" text-sm gap-2 w-full text-white break-words "
+                      className="text-sm gap-2 w-full text-white break-words "
                     >
                       <span className="text-zinc-300 mr-2">
                         {mess.timeChat} {mess.userName}:
@@ -173,8 +177,8 @@ const ChatChannelComponent = ({
                 ) : null} */}
                 <div className="flex items-center relative">
                   <input
-                    placeholder="Enter chat content here...."
-                    className="w-full outline-none py-1 bg-transparent text-white border-b-2"
+                    placeholder={t("chatChannelPlaceholder")}
+                    className="w-full outline-none py-1 bg-transparent text-white border-b-2 z-10"
                     value={messageChat}
                     type="text"
                     name=""

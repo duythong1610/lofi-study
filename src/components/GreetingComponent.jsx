@@ -7,6 +7,8 @@ import { useSelector } from "react-redux";
 const GreetingComponent = () => {
   const { t } = useTranslation();
   const user = useSelector((state) => state.user);
+  const isShowGreeting = useSelector((state) => state.settings.isShowGreeting);
+
   const [currentTime, setCurrentTime] = useState(new Date());
   const [currentTimeLocale, setCurrentTimeLocale] = useState(
     new Date().toLocaleString(t("currentLang"), {
@@ -63,8 +65,6 @@ const GreetingComponent = () => {
     return `${hours}:${minutes}`;
   };
 
-  console.log(formatTime(currentTime));
-
   const fetchRandomQuotes = async () => {
     const result = await axios.get("https://api.quotable.io/random");
     console.log(result);
@@ -78,22 +78,24 @@ const GreetingComponent = () => {
   return (
     <div>
       {" "}
-      <Draggable positionOffset={{ x: "65vw", y: "75vh" }} scale={1}>
-        <div className="!cursor-move w-[500px] inline-block absolute top-0 left-0 overflow-hidden">
-          <div className="mb-10">
-            <h1 className="text-white font-medium text-2xl neonText">
-              {greeting}
-              {user.firstName && ", " + user.firstName}
-            </h1>
-            <h1 className="text-white font-medium text-xl neonText">
-              {t("itIs")} {currentTimeLocale}
-            </h1>
+      {isShowGreeting && (
+        <Draggable positionOffset={{ x: "65vw", y: "70vh" }} scale={1}>
+          <div className="!cursor-move w-[30%] lg:w-[500px]  z-10  overflow-hidden">
+            <div className="mb-3 lg:mb-10">
+              <h1 className="text-white font-medium text-lg lg:text-2xl neonText">
+                {greeting}
+                {user.firstName && ", " + user.firstName}
+              </h1>
+              <h1 className="text-white font-medium text-sm lg:text-xl neonText">
+                {t("itIs")} {currentTimeLocale}
+              </h1>
+            </div>
+            <p className="text-white font-medium text-xs lg:text-sm neonText italic">
+              {quotes.replace(";", " ")}
+            </p>
           </div>
-          <p className="text-white font-medium text-sm neonText italic">
-            {quotes.replace(";", " ")}
-          </p>
-        </div>
-      </Draggable>
+        </Draggable>
+      )}
     </div>
   );
 };
