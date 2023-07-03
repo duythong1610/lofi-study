@@ -127,25 +127,25 @@ const ChatChannelComponent = ({
       {" "}
       {toggleChat && user.id && (
         <Draggable scale={1} handle=".handle" cancel=".close">
-          <div className="pl-4 py-4 absolute flex w-[70%] md:w-[400px] flex-col gap-4 top-0 bottom-0 md:left-[calc(5%+50px)] m-auto rounded-xl bg-black/60 max-h-[600px] backdrop-blur-sm z-20">
+          <div className="px-4 py-4 absolute flex md:w-[270px] lg:w-[400px] flex-col md:gap-2 lg:gap-4 top-0 bottom-0 md:left-[calc(5%+50px)] m-auto rounded-xl bg-black/60 max-h-[90%] lg:max-h-[600px] backdrop-blur-sm z-20">
             <div className="handle flex justify-between items-center cursor-move">
               <h1 className="text-white font-semibold ">
                 {t("chatChannelTitle")}
               </h1>
               <Tooltip title="Close" className="close">
                 <CloseCircleOutlined
-                  className="close pr-4 text-white text-xl cursor-pointer"
+                  className="close text-white text-xl cursor-pointer"
                   onClick={() => setToggleChat(!toggleChat)}
                 />
               </Tooltip>
             </div>
-            <div className="relative h-[480px] max-h-[480px]">
+            <div className="relative md:h-[75%] lg:h-[480px] max-h-[480px]">
               <div className="max-h-full overflow-y-auto overflow-x-hidden">
                 {messages?.map((mess, index) => {
                   return (
                     <div
                       key={index}
-                      className="text-sm gap-2 w-full text-white break-words "
+                      className="md:text-xs lg:text-sm gap-2 w-full text-white break-words "
                     >
                       <span className="text-zinc-300 mr-2">
                         {mess.timeChat} {mess.userName}:
@@ -167,7 +167,7 @@ const ChatChannelComponent = ({
                   />
                 </div>
               )}
-              <div className="absolute -bottom-10 w-full pr-4">
+              <div className="absolute -bottom-10 w-full">
                 {/* {selectedEmoji ? (
                   <Emoji
                     unified={selectedEmoji}
@@ -178,7 +178,7 @@ const ChatChannelComponent = ({
                 <div className="flex items-center relative">
                   <input
                     placeholder={t("chatChannelPlaceholder")}
-                    className="w-full outline-none py-1 bg-transparent text-white border-b-2 z-10"
+                    className="w-full text-sm md:text-sm lg:text-base outline-none py-1 bg-transparent text-white border-b-2 z-10"
                     value={messageChat}
                     type="text"
                     name=""

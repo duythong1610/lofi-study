@@ -21,7 +21,7 @@ import {
 } from "../redux/slides/playlistSlice";
 import LoginComponent from "./LoginComponent";
 import * as UserService from "../services/UserService";
-import { Popover } from "antd";
+import { Popover, Switch } from "antd";
 import { resetUser } from "../redux/slides/userSlice";
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -29,7 +29,7 @@ import UserSettingsComponent from "./UserSettingsComponent";
 import LanguageComponent from "./LanguageComponent";
 import CurrentTime from "./CurrentTime";
 import logo from "../assets/img/logochill.gif";
-import { showIsGreeting } from "../redux/slides/settingsSlice";
+import { showIsGreeting, showIsOptions } from "../redux/slides/settingsSlice";
 
 const HeaderComponent = ({
   isShowGreeting,
@@ -47,6 +47,7 @@ const HeaderComponent = ({
   console.log(tracks[selectedTrack]);
   const { t } = useTranslation();
   const isPlaying = useSelector((state) => state.playlist.isPlaying);
+  const isShowOptions = useSelector((state) => state.settings.isShowOptions);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
 
@@ -154,11 +155,34 @@ const HeaderComponent = ({
       )}
     </>
   );
+
+  const onChange = () => {
+    dispatch(showIsOptions());
+  };
   const content1 = (
     <>
-      <div className="md:block w-full overflow-hidden text-white">
-        <div className="py-2 px-3 flex items-center gap-3 mb-3">
+      <div className="md:block w-full overflow-hidden text-white py-2 px-3 ">
+        <h1 className="mb-5 text-base">General Settings</h1>
+        <div className="flex flex-col gap-3">
           <LanguageComponent />
+          <div className="flex items-center justify-between mt-2">
+            <h1>Show Options</h1>
+            <div>
+              <Switch defaultChecked={isShowOptions} onChange={onChange} />
+            </div>
+          </div>
+          <div className="flex items-center justify-between mt-2">
+            <h1>Show Clock</h1>
+            <div>
+              <Switch defaultChecked={isShowOptions} onChange={onChange} />
+            </div>
+          </div>
+          <div className="flex items-center justify-between mt-2">
+            <h1>Shortcuts</h1>
+            <div>
+              <Switch defaultChecked={isShowOptions} onChange={onChange} />
+            </div>
+          </div>
         </div>
       </div>
     </>

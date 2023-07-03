@@ -35,24 +35,24 @@ const YoutubeComponent = ({
     <div>
       {" "}
       {toggleYoutube && (
-        <Draggable>
+        <Draggable handle=".handle" cancel=".close, .hide">
           <div
             className={
               hiddenYoutube
                 ? "hidden"
-                : "px-4 py-4 absolute flex flex-col gap-4 top-0 bottom-0 left-[152px] m-auto rounded-xl bg-black/60 max-h-fit backdrop-blur-sm z-20 cursor-move"
+                : "px-4 py-4 absolute flex flex-col gap-4 top-0 bottom-0 left-[15%] m-auto rounded-xl bg-black/60 max-h-[80%] h-fit backdrop-blur-sm z-20 cursor-move"
             }
           >
-            <div className="flex justify-between items-center">
+            <div className="flex justify-between items-center handle">
               <h1 className="text-white font-semibold">Youtube</h1>
               <div className="flex items-center gap-2">
-                <Tooltip title="Hide">
+                <Tooltip title="Hide" className="hide">
                   <LineOutlined
                     className="text-white text-xl cursor-pointer"
                     onClick={() => setHiddenYoutube(!hiddenYoutube)}
                   />
                 </Tooltip>
-                <Tooltip title="Close">
+                <Tooltip title="Close" className="close">
                   <CloseCircleOutlined
                     className="text-white text-xl cursor-pointer"
                     onClick={() => {
@@ -63,12 +63,12 @@ const YoutubeComponent = ({
                 </Tooltip>
               </div>
             </div>
-            <div className="list flex flex-col gap-4 w-[600px] h-full">
+            <div className="list flex flex-col gap-4 md:w-[350px] lg:w-[600px] h-full">
               <input
                 type="text"
                 value={valueInput}
                 placeholder="Paste a YouTube video URL here and press enter"
-                className="outline-none py-1 px-2 rounded-md bg-transparent text-white"
+                className="outline-none py-1 px-2 rounded-md bg-transparent md:text-xs lg:text-sm text-white"
                 onChange={handleChangeInput}
                 onKeyDown={handleFindVideo}
               />
@@ -79,6 +79,7 @@ const YoutubeComponent = ({
                   onReady={handleReady}
                   controls={true}
                   width={"100%"}
+                  height={"100%"}
                   url={youtubeUrl}
                 ></ReactPlayer>
               </div>

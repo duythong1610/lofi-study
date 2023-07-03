@@ -33,6 +33,12 @@
   transition: none !important;
 }
 
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px rgb(0 0 0 / 0.6) inset !important;
+}
 :where(.css-dev-only-do-not-override-1wazalj).ant-modal .ant-modal-title,
 :where(.css-dev-only-do-not-override-1wazalj).ant-modal .ant-modal-header,
 .ant-modal-content,
@@ -85,6 +91,13 @@
   padding-left: 20px !important;
 }
 
+.ant-switch.ant-switch-checked {
+  background: #db2777 !important;
+}
+
+.ant-switch {
+  background: #868686a3 !important;
+}
 .ant-menu-item:hover {
   color: #fff !important;
 }

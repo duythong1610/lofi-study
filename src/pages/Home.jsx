@@ -61,6 +61,24 @@ const Home = () => {
     handleFetchTracks();
   }, []);
 
+  // useEffect(() => {
+  //   console.log("alo");
+  //   const handleKeyDown = (event) => {
+  //     if (event.code === "Space") {
+  //       // Gọi hàm hoặc xử lý tại đây
+  //       console.log("Space key pressed");
+  //     }
+  //   };
+
+  //   // Gắn sự kiện 'keydown' vào window
+  //   window.addEventListener("keydown", handleKeyDown);
+
+  //   // Cleanup: loại bỏ sự kiện khi component bị hủy
+  //   return () => {
+  //     window.removeEventListener("keydown", handleKeyDown);
+  //   };
+  // }, []);
+
   useEffect(() => {
     const audioElement = audioRef.current;
     if (audioElement?.paused || isPlaying) {
