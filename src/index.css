@@ -1,11 +1,12 @@
-@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&family=Sigmar&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Potta+One&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@400;500;600;700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@500;600;700&display=swap");
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 * {
-  font-family: "Poppins", sans-serif;
+  font-family: "Potta One", cursive;
   scroll-behavior: smooth;
   box-sizing: border-box;
   -webkit-tap-highlight-color: transparent;
@@ -63,7 +64,7 @@ input:-webkit-autofill:active {
 }
 
 .ant-menu {
-  width: 260px !important;
+  width: 290px !important;
 }
 
 .ant-radio-button-wrapper-checked {

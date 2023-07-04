@@ -213,7 +213,7 @@ const Home = () => {
                 className={
                   audioRef.current?.paused
                     ? "md:h-8 md:w-8 lg:h-12 lg:w-12 rounded-full object-cover"
-                    : "animate-spin-slow md:h-8 md:w-8 h-12 w-12 rounded-full object-cover"
+                    : "animate-spin-slow md:h-8 md:w-8 h-12 w-12 lg:h-12 lg:w-12 rounded-full object-cover"
                 }
               />
               <div className="bg-white mx-3 h-[1px] w-4"></div>

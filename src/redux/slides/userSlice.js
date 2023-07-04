@@ -4,6 +4,8 @@ const initialState = {
   firstName: "",
   lastName: "",
   email: "",
+  gender: "",
+  birthday: "",
   avatar: "",
   access_token: "",
   id: "",
@@ -21,6 +23,8 @@ export const userSlice = createSlice({
         firstName = "",
         lastName = "",
         email = "",
+        gender = "",
+        birthday = "",
         access_token = "",
         avatar = "",
         _id = "",
@@ -31,6 +35,8 @@ export const userSlice = createSlice({
       state.firstName = firstName ? firstName : state.firstName;
       state.lastName = lastName ? lastName : state.lastName;
       state.email = email ? email : state.email;
+      state.gender = gender ? gender : state.gender;
+      state.birthday = birthday ? birthday : state.birthday;
       state.avatar = avatar ? avatar : state.avatar;
       state.id = _id ? _id : state.id;
       state.access_token = access_token ? access_token : state.access_token;
@@ -43,6 +49,8 @@ export const userSlice = createSlice({
       state.firstName = "";
       state.lastName = "";
       state.email = "";
+      state.gender = "";
+      state.birthday = "";
       state.avatar = "";
       state.access_token = "";
       state.isAdmin = false;

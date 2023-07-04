@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import Draggable from "react-draggable";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import { Resizable } from "react-resizable";
 
 const GreetingComponent = () => {
   const { t } = useTranslation();
@@ -79,22 +80,24 @@ const GreetingComponent = () => {
     <div>
       {" "}
       {isShowGreeting && (
-        <Draggable positionOffset={{ x: "65vw", y: "60vh" }} scale={1}>
-          <div className="!cursor-move w-[30%] lg:w-[500px]  z-10  overflow-hidden">
-            <div className="mb-3 lg:mb-10">
-              <h1 className="text-white font-medium text-lg lg:text-2xl neonText">
-                {greeting}
-                {user.firstName && ", " + user.firstName}
-              </h1>
-              <h1 className="text-white font-medium text-sm lg:text-xl neonText">
-                {t("itIs")} {currentTimeLocale}
-              </h1>
+        <div>
+          <Draggable positionOffset={{ x: "65vw", y: "60vh" }} scale={1}>
+            <div className="!cursor-move w-[30%] lg:w-[500px]  z-10  overflow-hidden">
+              <div className="mb-3 lg:mb-10">
+                <h1 className="text-white font-medium text-lg lg:text-2xl neonText">
+                  {greeting}
+                  {user.firstName && ", " + user.firstName}
+                </h1>
+                <h1 className="text-white font-medium text-sm lg:text-xl neonText">
+                  {t("itIs")} {currentTimeLocale}
+                </h1>
+              </div>
+              <p className="text-white font-medium text-xs lg:text-sm neonText italic">
+                {quotes.replace(";", " ")}
+              </p>
             </div>
-            <p className="text-white font-medium text-xs lg:text-sm neonText italic">
-              {quotes.replace(";", " ")}
-            </p>
-          </div>
-        </Draggable>
+          </Draggable>
+        </div>
       )}
     </div>
   );

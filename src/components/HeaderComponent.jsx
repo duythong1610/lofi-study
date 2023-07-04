@@ -192,7 +192,7 @@ const HeaderComponent = ({
     <>
       <div className="md:block overflow-hidden text-white py-1 px-2 w-[300px]">
         <div className="range flex items-center text-white text-sm ">
-          <span className="min-w-[35px]">{formatTime(currentTime)}</span>
+          <span className="min-w-[40px]">{formatTime(currentTime)}</span>
           <input
             className="slider-timer mx-2"
             type="range"
