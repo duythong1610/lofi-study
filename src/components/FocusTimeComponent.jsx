@@ -154,20 +154,20 @@ const FocusTimeComponent = ({
             </div> */}
             <div className=" bg-black/30 backdrop:blur-sm md:py-2 md:px-5 lg:p-5 rounded-xl">
               <div className="font-bold cursor-move select-none flex items-center gap-3 font-digital-7">
-                <h1 className="text-white md:text-7xl lg:text-8xl neonText text-center md:w-[100px] lg:w-[160px] font-digital-7">
+                <h1 className="text-white md:text-8xl lg:text-9xl neonText text-center md:w-[100px] lg:w-[160px] font-digital-7">
                   {formatTime(countdown).hours}
                 </h1>
-                <span className="text-white md:text-7xl lg:text-8xl neonText text-center md:mb-2 lg:mb-5 font-digital-7 ">
+                <span className="text-white md:text-8xl lg:text-9xl neonText text-center md:mb-2 lg:mb-5 font-digital-7 ">
                   :
                 </span>
 
-                <h1 className="text-white md:text-7xl lg:text-8xl neonText text-center md:w-[100px] lg:w-[160px] font-digital-7">
+                <h1 className="text-white md:text-8xl lg:text-9xl neonText text-center md:w-[100px] lg:w-[160px] font-digital-7">
                   {formatTime(countdown).minutes}
                 </h1>
-                <span className="text-white md:text-7xl lg:text-8xl neonText text-center md:mb-2 lg:mb-5 font-digital-7">
+                <span className="text-white md:text-8xl lg:text-9xl neonText text-center md:mb-2 lg:mb-5 font-digital-7">
                   :
                 </span>
-                <h1 className="text-white md:text-7xl lg:text-8xl neonText text-center md:w-[100px] lg:w-[160px] font-digital-7">
+                <h1 className="text-white md:text-8xl lg:text-9xl neonText text-center md:w-[100px] lg:w-[160px] font-digital-7">
                   {formatTime(countdown).seconds}
                 </h1>
               </div>
