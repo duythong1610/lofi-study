@@ -12,10 +12,6 @@
   -webkit-tap-highlight-color: transparent;
 }
 
-.font-digital-7 {
-  font-family: "Orbitron", sans-serif;
-}
-
 ::-webkit-scrollbar {
   width: 0 !important;
   display: block;

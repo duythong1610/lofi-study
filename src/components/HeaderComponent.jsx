@@ -29,7 +29,11 @@ import UserSettingsComponent from "./UserSettingsComponent";
 import LanguageComponent from "./LanguageComponent";
 import CurrentTime from "./CurrentTime";
 import logo from "../assets/img/logochill.gif";
-import { showIsGreeting, showIsOptions } from "../redux/slides/settingsSlice";
+import {
+  showIsClock,
+  showIsGreeting,
+  showIsOptions,
+} from "../redux/slides/settingsSlice";
 
 const HeaderComponent = ({
   isShowGreeting,
@@ -48,6 +52,7 @@ const HeaderComponent = ({
   const { t } = useTranslation();
   const isPlaying = useSelector((state) => state.playlist.isPlaying);
   const isShowOptions = useSelector((state) => state.settings.isShowOptions);
+  const isShowClock = useSelector((state) => state.settings.isShowClock);
   const user = useSelector((state) => state.user);
   const navigate = useNavigate();
 
@@ -56,7 +61,8 @@ const HeaderComponent = ({
   const [isUserSettingsOpen, setIsUserSettingsOpen] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
 
-  console.log(isPlaying);
+  console.log(isShowClock);
+  console.log(JSON.parse(localStorage.getItem("isShowClock")))
 
   const handleMusic = () => {
     if (isPlaying) {
@@ -156,8 +162,12 @@ const HeaderComponent = ({
     </>
   );
 
-  const onChange = () => {
+  const onChangeOptions = () => {
     dispatch(showIsOptions());
+  };
+
+  const onChangeClock = () => {
+    dispatch(showIsClock());
   };
   const content1 = (
     <>
@@ -168,21 +178,24 @@ const HeaderComponent = ({
           <div className="flex items-center justify-between mt-2">
             <h1>{t("showOptions")}</h1>
             <div>
-              <Switch defaultChecked={isShowOptions} onChange={onChange} />
+              <Switch
+                defaultChecked={isShowOptions}
+                onChange={onChangeOptions}
+              />
             </div>
           </div>
           <div className="flex items-center justify-between mt-2">
             <h1>{t("showClock")}</h1>
             <div>
-              <Switch defaultChecked={isShowOptions} onChange={onChange} />
+              <Switch defaultChecked={isShowClock} onChange={onChangeClock} />
             </div>
           </div>
-          <div className="flex items-center justify-between mt-2">
+          {/* <div className="flex items-center justify-between mt-2">
             <h1>Shortcuts</h1>
             <div>
               <Switch defaultChecked={isShowOptions} onChange={onChange} />
             </div>
-          </div>
+          </div> */}
         </div>
       </div>
     </>
@@ -229,12 +242,15 @@ const HeaderComponent = ({
             />
           </div>
           <div className="absolute right-0 flex items-center">
-            <div
-              className="bg-black/60 backdrop-blur-sm  px-4 md:py-1 lg:py-1 rounded-xl cursor-pointer mr-3"
-              onClick={() => dispatch(showIsGreeting())}
-            >
-              <CurrentTime />
-            </div>
+            {isShowClock && (
+              <div
+                className="bg-black/60 backdrop-blur-sm  px-4 md:py-1 lg:py-1 rounded-xl cursor-pointer mr-3"
+                onClick={() => dispatch(showIsGreeting())}
+              >
+                <CurrentTime />
+              </div>
+            )}
+
             <div className="bg-black/60 backdrop-blur-sm  px-4 md:py-[2px] lg:py-1 rounded-xl mr-3">
               <div className="flex items-center md: gap-1 lg:gap-3 text-2xl justify-center">
                 <FastBackwardOutlined
