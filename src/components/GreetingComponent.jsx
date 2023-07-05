@@ -82,7 +82,7 @@ const GreetingComponent = () => {
       {isShowGreeting && (
         <div>
           <Draggable positionOffset={{ x: "65vw", y: "60vh" }} scale={1}>
-            <div className="!cursor-move w-[30%] lg:w-[500px]  z-10  overflow-hidden">
+            <div className="w-[70%] md:w-[30%] lg:w-[500px] z-10  overflow-hidden">
               <div className="mb-3 lg:mb-10">
                 <h1 className="text-white font-medium text-lg lg:text-2xl neonText">
                   {greeting}

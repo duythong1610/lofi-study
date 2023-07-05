@@ -277,7 +277,7 @@ const HeaderComponent = ({
               className="hidden md:block "
             >
               <div
-                className="!flex md:w-7 md:h-7 lg:w-8 lg:h-8 bg-black/60 backdrop-blur-sm  rounded-full cursor-pointer mr-3"
+                className="!flex w-7 h-7 md:w-7 md:h-7 lg:w-8 lg:h-8 bg-black/60 backdrop-blur-sm  rounded-full cursor-pointer mr-3"
                 // onClick={() => handleLogin()}
               >
                 <SettingOutlined className="text-white md:text-base lg:text-lg md:leading-4 lg:leading-5 !block m-auto" />
@@ -298,7 +298,7 @@ const HeaderComponent = ({
               className="md:block "
             >
               <div
-                className="!flex md:w-7 md:h-7 lg:w-8 lg:h-8 bg-black/60 backdrop-blur-sm  rounded-full cursor-pointer "
+                className="!flex w-7 h-7 md:w-7 md:h-7 lg:w-8 lg:h-8 bg-black/60 backdrop-blur-sm  rounded-full cursor-pointer "
                 onClick={() => handleLogin()}
               >
                 <UserOutlined className="text-white md:text-base lg:text-lg md:leading-4 lg:leading-5 !block m-auto" />
