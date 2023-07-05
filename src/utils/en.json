@@ -39,7 +39,10 @@
   "profileTitle": "Profile",
   "birthday": "Birthday",
   "birthdayPlaceholder": "Day/month/year",
+  "userName": "User Name",
   "gender": "Gender",
+  "female": "Female",
+  "male": "Male",
   "changePassword": "Change Password",
   "currentPassword": "Current password",
   "newPassword": "New password",
@@ -69,5 +72,9 @@
   "window_rain": "Window Rain",
   "train": "Train",
   "plane": "Plane",
-  "thunders": "Thunders"
+  "thunders": "Thunders",
+  "generalSettings": "General Settings",
+  "showOptions": "Show Options",
+  "showClock": "Show Clock",
+  "sendRequire": "Send Require"
 }

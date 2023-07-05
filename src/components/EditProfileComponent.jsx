@@ -92,8 +92,8 @@ const EditProfileComponent = ({ setKeySelected }) => {
             placeholder={t("birthdayPlaceholder")}
             // onChange={(e) => setTaskName(e.target.value)}
           >
-            <option value="male">Nam</option>
-            <option value="female">Nữ</option>
+            <option value="male">{t("male")}</option>
+            <option value="female">{t("female")}</option>
           </select>
         </div>
         <div className="flex flex-col flex-1">

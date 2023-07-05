@@ -39,7 +39,10 @@
   "profileTitle": "Hồ sơ",
   "birthday": "Ngày sinh",
   "birthdayPlaceholder": "Ngày/tháng/năm",
+  "userName": "Tên người dùng",
   "gender": "Giới tính",
+  "female": "Nữ",
+  "male": "Nam",
   "changePassword": "Đổi mật khẩu",
   "currentPassword": "Mật khẩu hiện tại",
   "newPassword": "Mật khẩu mới",
@@ -69,5 +72,9 @@
   "window_rain": "Mưa bên cửa sổ",
   "train": "Xe lửa",
   "plane": "Máy bay",
-  "thunders": "Sấm sét"
+  "thunders": "Sấm sét",
+  "generalSettings": "Cài đặt chung",
+  "showOptions": "Hiện tùy chọn",
+  "showClock": "Hiện đồng hồ",
+  "sendRequire": "Gửi yêu cầu"
 }

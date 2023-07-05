@@ -57,7 +57,7 @@ const ScreenListComponent = ({
                     alt=""
                     className="w-full object-cover rounded-xl !inline-block"
                   />
-                  <h1 className="text-white text-lg lg:text-3xl whitespace-nowrap font-semibold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 !opacity-100">
+                  <h1 className="text-white text-lg lg:text-3xl w-full font-semibold absolute top-1/2 left-1/2 -translate-y-1/2 -translate-x-1/2 !opacity-100 line-clamp-2 text-center px-4">
                     {item.name}
                   </h1>
                 </div>

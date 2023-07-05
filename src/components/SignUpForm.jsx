@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import * as message from "./Message";
-const SignUpForm = ({ setIsLogin }) => {
+const SignUpForm = ({ setCurrentComponent }) => {
   const { t } = useTranslation();
   const user = useSelector((state) => state.user);
 
@@ -46,10 +46,8 @@ const SignUpForm = ({ setIsLogin }) => {
                     required: "Tên là bắt buộc",
                   })}
                   type="text"
-                  // value={hours}
                   className="w-full outline-none py-1 bg-transparent border-b-2 !appearance-none m-0 focus:border-pink-700 transition-all"
                   placeholder={t("firstName")}
-                  // onChange={(e) => handleChangeHours(e)}
                 />
                 <p className="text-xs mt-2 text-pink-600">
                   {errors?.firstName?.message}
@@ -62,10 +60,8 @@ const SignUpForm = ({ setIsLogin }) => {
                     required: "Họ là bắt buộc",
                   })}
                   type="text"
-                  // value={minutes}
                   className="w-full outline-none py-1 bg-transparent border-b-2 !appearance-none m-0 focus:border-pink-700 transition-all"
                   placeholder={t("lastName")}
-                  // onChange={(e) => handleChangeMinutes(e)}
                 />
                 <p className="text-xs mt-2 text-pink-600">
                   {errors?.lastName?.message}
@@ -77,11 +73,9 @@ const SignUpForm = ({ setIsLogin }) => {
                 {...register("email", {
                   required: "Email là bắt buộc",
                 })}
-                // value={taskName}
                 className="w-full outline-none py-1 bg-transparent border-b-2 focus:border-pink-700 transition-all"
                 placeholder="youremail@gmail.com"
                 type="email"
-                // onChange={(e) => setTaskName(e.target.value)}
               />
               <p className="text-xs mt-2 text-pink-600">
                 {errors?.email?.message}
@@ -93,11 +87,9 @@ const SignUpForm = ({ setIsLogin }) => {
                 {...register("password", {
                   required: "Mật khẩu là bắt buộc",
                 })}
-                // value={taskName}
                 className="w-full outline-none py-1 bg-transparent border-b-2 focus:border-pink-700 transition-all"
                 placeholder={t("password")}
                 type="password"
-                // onChange={(e) => setTaskName(e.target.value)}
               />
               <p className="text-xs mt-2 text-pink-600">
                 {errors?.password?.message}
@@ -108,11 +100,9 @@ const SignUpForm = ({ setIsLogin }) => {
                 {...register("confirmPassword", {
                   required: "Xác nhận mật khẩu là bắt buộc",
                 })}
-                // value={taskName}
                 className="w-full outline-none py-1 bg-transparent border-b-2 focus:border-pink-700 transition-all"
                 placeholder={t("confirmPassword")}
                 type="password"
-                // onChange={(e) => setTaskName(e.target.value)}
               />
               <p className="text-xs mt-2 text-pink-600">
                 {errors?.confirmPassword?.message}
@@ -128,18 +118,12 @@ const SignUpForm = ({ setIsLogin }) => {
                   {t("signUpTitle")}
                 </span>
               </button>
-              {/* <button
-                    type="submit"
-                    className="text-white w-full m-auto bg-pink-700 py-[6px] rounded-xl hover:opacity-70 transition-all"
-                    // onClick={() => handleStartCountdown()}
-                  >
-                    {t("signUpTitle")}
-                  </button> */}
+
               <h1 className="text-white cursor-pointer">
                 {t("doYouAlreadyHaveAnAccount")}?
                 <span
                   className="text-pink-600 font-bold"
-                  onClick={() => setIsLogin(true)}
+                  onClick={() => setCurrentComponent("login")}
                 >
                   {" "}
                   {t("loginTitle")}

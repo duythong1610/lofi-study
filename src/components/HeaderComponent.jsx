@@ -162,17 +162,17 @@ const HeaderComponent = ({
   const content1 = (
     <>
       <div className="md:block w-full overflow-hidden text-white py-2 px-3 ">
-        <h1 className="mb-5 text-base">General Settings</h1>
+        <h1 className="mb-5 text-base">{t("generalSettings")}</h1>
         <div className="flex flex-col gap-3">
           <LanguageComponent />
           <div className="flex items-center justify-between mt-2">
-            <h1>Show Options</h1>
+            <h1>{t("showOptions")}</h1>
             <div>
               <Switch defaultChecked={isShowOptions} onChange={onChange} />
             </div>
           </div>
           <div className="flex items-center justify-between mt-2">
-            <h1>Show Clock</h1>
+            <h1>{t("showClock")}</h1>
             <div>
               <Switch defaultChecked={isShowOptions} onChange={onChange} />
             </div>

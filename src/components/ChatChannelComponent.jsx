@@ -107,7 +107,6 @@ const ChatChannelComponent = ({
 
   const onClick = (emojiData, event) => {
     console.log(emojiData);
-    // const emojiText = emojiData.emoji;
     setMessageChat((prevValue) => prevValue + emojiData.native);
   };
 

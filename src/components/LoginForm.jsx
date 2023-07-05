@@ -3,19 +3,12 @@ import React, { useState } from "react";
 import * as UserService from "../services/UserService";
 import jwt_decode from "jwt-decode";
 import { updateUser } from "../redux/slides/userSlice";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import * as message from "./Message";
-const LoginForm = ({ setIsModalOpen, setIsLogin }) => {
+const LoginForm = ({ setIsModalOpen, setCurrentComponent }) => {
   const { t } = useTranslation();
-  const user = useSelector((state) => state.user);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
-  const [messageError, setMessageError] = useState("");
 
   const {
     register,
@@ -24,8 +17,6 @@ const LoginForm = ({ setIsModalOpen, setIsLogin }) => {
   } = useForm({
     criteriaMode: "all",
   });
-
-  console.log(errors);
 
   const dispatch = useDispatch();
 
@@ -71,7 +62,6 @@ const LoginForm = ({ setIsModalOpen, setIsLogin }) => {
                 {...register("email", {
                   required: "Email là bắt buộc",
                 })}
-                // value={taskName}
                 className="w-full outline-none py-1 bg-transparent border-b-2 focus:border-pink-700 transition-all"
                 placeholder="youremail@gmail.com"
                 type="text"
@@ -82,7 +72,6 @@ const LoginForm = ({ setIsModalOpen, setIsLogin }) => {
                 {...register("password", {
                   required: "Mật khẩu là bắt buộc",
                 })}
-                // value={taskName}
                 className="w-full outline-none py-1 bg-transparent border-b-2 focus:border-pink-700 transition-all"
                 placeholder={t("password")}
                 type="text"
@@ -90,7 +79,12 @@ const LoginForm = ({ setIsModalOpen, setIsLogin }) => {
             </div>
             <div>
               <div className="text-end">
-                <h1 className="text-sm text-pink-600 cursor-pointer font-medium">
+                <h1
+                  className="text-sm text-pink-600 cursor-pointer font-medium inline"
+                  onClick={() => {
+                    setCurrentComponent("forgot");
+                  }}
+                >
                   {t("forgotPassword")}?
                 </h1>
               </div>
@@ -106,19 +100,13 @@ const LoginForm = ({ setIsModalOpen, setIsLogin }) => {
                   {t("loginTitle")}
                 </span>
               </button>
-              {/* <button
-                    type="submit"
-                    className="text-white w-full m-auto bg-pink-700 py-[6px] rounded-xl hover:opacity-70 transition-all"
-                  >
-                    {t("loginTitle")}
-                  </button> */}
+
               <h1 className="text-white cursor-pointer">
                 {t("doNotHaveAnAccount")}
                 <span
-                  className="text-pink-600 font-bold"
-                  onClick={() => setIsLogin(false)}
+                  className="text-pink-600 font-bold ml-1"
+                  onClick={() => setCurrentComponent("signup")}
                 >
-                  {" "}
                   {t("signUpTitle")}
                 </span>
               </h1>

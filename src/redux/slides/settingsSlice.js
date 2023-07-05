@@ -4,7 +4,7 @@ const settingsSlice = createSlice({
   name: "settings",
   initialState: {
     isShowGreeting: JSON.parse(localStorage.getItem("isShowGreeting")),
-    isShowOptions: JSON.parse(localStorage.getItem("isShowOptions")),
+    isShowOptions: JSON.parse(localStorage.getItem("isShowOptions")) || true,
   },
   reducers: {
     showIsGreeting(state) {

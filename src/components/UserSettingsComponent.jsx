@@ -86,9 +86,7 @@ const UserSettingsComponent = ({
         >
           <Menu
             selectedKeys={keySelected}
-            // defaultOpenKeys={"accountOverview"}
             defaultSelectedKeys={keySelected}
-            // openKeys={openKeys}
             onClick={handleOnClick}
             style={{
               width: 256,
