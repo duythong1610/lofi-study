@@ -17,6 +17,7 @@ import {
   prevTrack,
 } from "../redux/slides/playlistSlice";
 import { useDispatch, useSelector } from "react-redux";
+import LoginComponent from "../components/LoginComponent";
 
 const Home = () => {
   const dispatch = useDispatch();
@@ -182,6 +183,11 @@ const Home = () => {
             isUser={isUser}
             toggleChat={toggleChat}
             setToggleChat={setToggleChat}
+          />
+
+          <LoginComponent
+            isModalOpen={isModalOpen}
+            setIsModalOpen={setIsModalOpen}
           />
 
           {/* <Modal

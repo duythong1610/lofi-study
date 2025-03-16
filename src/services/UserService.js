@@ -12,7 +12,7 @@ export const userApi = {
     }),
   logoutUser: (data) =>
     request({
-      url: "/api/user/sign-in",
+      url: "/api/user/log-out",
       method: "post",
       data,
     }),

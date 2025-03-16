@@ -24,6 +24,7 @@ const OptionsComponent = ({
   setIsModalOpenFocusTime,
 }) => {
   const isShowOptions = useSelector((state) => state.settings.isShowOptions);
+  const user = useSelector((state) => state.user);
 
   const { t } = useTranslation();
   const handleFullScreen = () => {
@@ -91,7 +92,7 @@ const OptionsComponent = ({
               icon={<CommentOutlined className="lg:text-lg md:text-base" />}
               onClick={() => {
                 setToggleChat(!toggleChat);
-                if (!userName) {
+                if (!user.id) {
                   setIsModalOpen(true);
                 }
               }}

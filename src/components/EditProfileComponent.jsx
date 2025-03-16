@@ -1,11 +1,14 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import * as UserService from "../services/UserService";
+import { message } from "antd";
+import { updateUser } from "../redux/slides/userSlice";
 
 const EditProfileComponent = ({ setKeySelected }) => {
   const user = useSelector((state) => state.user);
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -15,9 +18,17 @@ const EditProfileComponent = ({ setKeySelected }) => {
     criteriaMode: "all",
   });
 
-  const handleEdit = async (data) => {
-    const res = await UserService.userApi.updateUser(user.id, data);
-    console.log(res);
+  const handleEdit = async (dataForm) => {
+    try {
+      await UserService.userApi.updateUser(user.id, dataForm);
+      const { data } = await UserService.userApi.getDetailsUser(user.id);
+      dispatch(
+        updateUser({
+          ...data,
+        })
+      );
+      message.success("Cập nhật hồ sơ thành công!");
+    } catch (error) {}
   };
 
   const { t } = useTranslation();

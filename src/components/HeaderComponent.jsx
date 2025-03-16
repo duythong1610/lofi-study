@@ -297,6 +297,7 @@ const HeaderComponent = ({
                 // onClick={() => handleLogin()}
               >
                 <SettingOutlined className="text-white md:text-base lg:text-lg md:leading-4 lg:leading-5 !block m-auto" />
+
                 {/* <h1 className="text-white text-base">
                 {user.id ? `${t("helloTitle")}, ` : `${t("loginTitle")}`}
                 <span className="hover:text-pink-600  font-bold">
@@ -317,7 +318,15 @@ const HeaderComponent = ({
                 className="!flex w-7 h-7 md:w-7 md:h-7 lg:w-8 lg:h-8 bg-black/60 backdrop-blur-sm  rounded-full cursor-pointer "
                 onClick={() => handleLogin()}
               >
-                <UserOutlined className="text-white md:text-base lg:text-lg md:leading-4 lg:leading-5 !block m-auto" />
+                {user.id ? (
+                  <img
+                    src="https://tiki.vn/blog/wp-content/uploads/2023/03/gojou-luc-nhan.webp"
+                    alt=""
+                    className="w-full h-full rounded-full"
+                  />
+                ) : (
+                  <UserOutlined className="text-white md:text-base lg:text-lg md:leading-4 lg:leading-5 !block m-auto" />
+                )}
                 {/* <h1 className="text-white text-base">
                 {user.id ? `${t("helloTitle")}, ` : `${t("loginTitle")}`}
                 <span className="hover:text-pink-600  font-bold">
