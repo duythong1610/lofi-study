@@ -1,4 +1,4 @@
-import { Modal } from "antd";
+import { Modal, Spin } from "antd";
 import React, { useState } from "react";
 import * as UserService from "../services/UserService";
 
@@ -7,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import * as message from "./Message";
 import { useForm } from "react-hook-form";
 const ForgotPasswordForm = ({ setCurrentComponent }) => {
+  const [loading, setLoading] = useState(false);
   const { t } = useTranslation();
   const {
     register,
@@ -16,9 +17,16 @@ const ForgotPasswordForm = ({ setCurrentComponent }) => {
     criteriaMode: "all",
   });
 
-  const handleForgotPassword = async (data) => {
-    const res = await UserService.forgotPassword(data);
-    console.log(res);
+  const handleForgotPassword = async (formData) => {
+    try {
+      setLoading(true);
+      const res = await UserService.userApi.forgotPassword(formData);
+      console.log(res);
+      message.success(res.message);
+    } catch (error) {
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -53,15 +61,17 @@ const ForgotPasswordForm = ({ setCurrentComponent }) => {
             </div>
 
             <div className="mt-5 flex flex-col gap-3">
-              <button
-                type="submit"
-                class="group relative py-2 px-5 overflow-hidden rounded-lg bg-white shadow"
-              >
-                <div class="absolute inset-0 w-0 bg-pink-600 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-                <span class="relative text-black group-hover:text-white">
-                  {t("sendRequire")}
-                </span>
-              </button>
+              <Spin spinning={loading}>
+                <button
+                  type="submit"
+                  class="group relative py-2 px-5 overflow-hidden rounded-lg bg-white shadow w-full"
+                >
+                  <div class="absolute inset-0 w-0 bg-pink-600 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+                  <span class="relative text-black group-hover:text-white">
+                    {t("sendRequire")}
+                  </span>
+                </button>
+              </Spin>
             </div>
           </div>
         </form>

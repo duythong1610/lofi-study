@@ -1,168 +1,87 @@
 import axios from "axios";
+import { request } from "../utils/request";
 
 export const axiosJWT = axios.create();
 
-export const loginUser = async (data) => {
-  const res = await axios.post(
-    `${import.meta.env.VITE_API_KEY}/api/user/sign-in`,
-    data
-  );
-  return res.data;
-};
+export const userApi = {
+  loginUser: (data) =>
+    request({
+      url: "/api/user/sign-in",
+      method: "post",
+      data,
+    }),
+  logoutUser: (data) =>
+    request({
+      url: "/api/user/sign-in",
+      method: "post",
+      data,
+    }),
+  signupUser: (data) =>
+    request({
+      url: "/api/user/sign-up",
+      method: "post",
+      data,
+    }),
 
-export const logoutUser = async () => {
-  const res = await axios.post(
-    `${import.meta.env.VITE_API_KEY}/api/user/log-out`
-  );
-  return res.data;
-};
+  changePassword: (data) =>
+    request({
+      url: "/api/user/change-password",
+      method: "post",
+      data,
+    }),
 
-export const signupUser = async (data) => {
-  const res = await axios.post(
-    `${import.meta.env.VITE_API_KEY}/api/user/sign-up`,
-    data
-  );
-  return res.data;
-};
+  forgotPassword: (data) =>
+    request({
+      url: "/api/user/forgot-password",
+      method: "post",
+      data,
+    }),
 
-export const changePassword = async (data, access_token) => {
-  const res = await axiosJWT.post(
-    `${import.meta.env.VITE_API_KEY}/api/user/change-password`,
-    data,
-    {
-      headers: {
-        token: `Bearer ${access_token}`,
-      },
-    }
-  );
+  resetPassword: (data) =>
+    request({
+      url: "/api/user/reset-password",
+      method: "post",
+      data,
+    }),
 
-  return res.data;
-};
+  getAllUser: (token) =>
+    request({
+      url: "/api/user/get-all",
+      method: "get",
+      token,
+    }),
 
-export const forgotPassword = async (data) => {
-  const res = await axios.post(
-    `${import.meta.env.VITE_API_KEY}/api/user/forgot-password`,
-    data
-  );
+  getDetailsUser: (id, token) =>
+    request({
+      url: `/api/user/get-details/${id}`,
+      method: "get",
+      token,
+    }),
 
-  return res.data;
-};
+  updateUser: (id, data) =>
+    request({
+      url: `/api/user/update-user/${id}`,
+      method: "put",
+      data,
+    }),
 
-export const resetPassword = async (data) => {
-  const res = await axios.post(
-    `${import.meta.env.VITE_API_KEY}/api/user/reset-password`,
-    data
-  );
+  deleteUser: (id, token) =>
+    request({
+      url: `/api/user/delete-user/${id}`,
+      method: "delete",
+      token,
+    }),
 
-  return res.data;
-};
+  deleteManyUser: (data) =>
+    request({
+      url: "/api/user/delete-many",
+      method: "post",
+      data,
+    }),
 
-export const getAllUser = async (access_token) => {
-  const res = await axiosJWT.get(
-    `${import.meta.env.VITE_API_KEY}/api/user/get-all/`,
-    {
-      headers: {
-        token: `Bearer ${access_token}`,
-      },
-    }
-  );
-  return res.data;
-};
-
-export const getDetailsUser = async (id, access_token) => {
-  const res = await axiosJWT.get(
-    `${import.meta.env.VITE_API_KEY}/api/user/get-details/${id}`,
-    {
-      headers: {
-        token: `Bearer ${access_token}`,
-      },
-    }
-  );
-  return res.data;
-};
-
-export const viewedProducts = async (productId, userId, access_token) => {
-  const res = await axiosJWT.post(
-    `${import.meta.env.VITE_API_KEY}/api/user/viewed-products/${userId}`,
-    { productId },
-    {
-      headers: {
-        token: `Bearer ${access_token}`,
-      },
-    }
-  );
-  return res.data;
-};
-
-export const getViewedProducts = async (userId, access_token) => {
-  const res = await axios.get(
-    `${import.meta.env.VITE_API_KEY}/api/user/get-viewed-products/${userId}`,
-    {
-      headers: {
-        token: `Bearer ${access_token}`,
-      },
-    }
-  );
-  return res.data;
-};
-export const updateUser = async (id, data, access_token) => {
-  const res = await axiosJWT.put(
-    `${import.meta.env.VITE_API_KEY}/api/user/update-user/${id}`,
-    data,
-    {
-      headers: {
-        token: `Bearer ${access_token}`,
-      },
-    }
-  );
-  return res.data;
-};
-
-export const deleteUser = async (id, access_token) => {
-  const res = await axiosJWT.delete(
-    `${import.meta.env.VITE_API_KEY}/api/user/delete-user/${id}`,
-    {
-      headers: {
-        token: `Bearer ${access_token}`,
-      },
-    }
-  );
-  return res.data;
-};
-
-export const deleteManyUser = async (data, access_token) => {
-  const res = await axiosJWT.post(
-    `${import.meta.env.VITE_API_KEY}/api/user/delete-many`,
-    data,
-    {
-      headers: {
-        token: `Bearer ${access_token}`,
-      },
-    }
-  );
-  return res.data;
-};
-
-// export const refreshToken = async () => {
-//   const res = await axios.post(
-//     "api/user/refresh-token",
-//     {},
-//     {
-//       withCredentials: true,
-//     }
-//   );
-//   return res.data;
-// };
-
-export const refreshToken = async (refreshToken) => {
-  const res = await axios.post(
-    `${import.meta.env.VITE_API_KEY}/api/user/refresh-token`,
-    {},
-    {
-      headers: {
-        token: `Bearer ${refreshToken}`,
-      },
-    }
-  );
-  return res.data;
+  refreshToken: () =>
+    request({
+      url: "/api/user/refresh-token",
+      method: "post",
+    }),
 };

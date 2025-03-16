@@ -1,31 +1,13 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
 import "./index.css";
-import Draggable from "react-draggable";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
-import { Modal } from "antd";
-import ScreenComponent from "./components/ScreenComponent";
-import ScreenListComponent from "./components/ScreenListComponent";
-import MixerComponent from "./components/MixerComponent";
-import YoutubeComponent from "./components/YoutubeComponent";
-import ChatChannelComponent from "./components/ChatChannelComponent";
-import OptionsComponent from "./components/OptionsComponent";
-import GreetingComponent from "./components/GreetingComponent";
-import FocusTimeComponent from "./components/FocusTimeComponent";
-import HeaderComponent from "./components/HeaderComponent";
 import jwt_decode from "jwt-decode";
-import * as UserService from "./services/UserService";
-import { updateUser } from "./redux/slides/userSlice";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  playTrack,
-  pauseTrack,
-  nextTrack,
-  prevTrack,
-  fetchTracks,
-} from "./redux/slides/playlistSlice";
-import { isJsonString } from "./utils/util";
 import Home from "./pages/Home";
+import { updateUser } from "./redux/slides/userSlice";
+import * as UserService from "./services/UserService";
+import { isJsonString } from "./utils/util";
 
 function App() {
   const dispatch = useDispatch();
@@ -48,6 +30,7 @@ function App() {
       user?.access_token || localStorage.getItem("access_token");
     let decoded = {};
     if (storageData && isJsonString(storageData) && !user?.access_token) {
+      console.log(storageData);
       storageData = JSON.parse(storageData);
       decoded = jwt_decode(storageData);
     }
@@ -64,10 +47,10 @@ function App() {
       const decodedRefreshToken = jwt_decode(refreshToken);
       if (decoded?.exp < currentTime.getTime() / 1000) {
         if (decodedRefreshToken?.exp > currentTime.getTime() / 1000) {
-          const data = await UserService.refreshToken(refreshToken);
+          const data = await UserService.userApi.refreshToken(refreshToken);
           config.headers["token"] = `Bearer ${data?.access_token}`;
         } else {
-          await UserService.logoutUser();
+          await UserService.userApi.logoutUser();
           localStorage.removeItem("access_token");
           localStorage.removeItem("refresh_token");
           // message.success("Đăng xuất thành công!");
@@ -84,7 +67,7 @@ function App() {
   const handleGetDetailUser = async (id, access_token) => {
     let storageRefreshToken = localStorage.getItem("refresh_token");
     const refreshToken = JSON.parse(storageRefreshToken);
-    const res = await UserService.getDetailsUser(id, access_token);
+    const res = await UserService.userApi.getDetailsUser(id, access_token);
     dispatch(
       updateUser({
         ...res?.data,

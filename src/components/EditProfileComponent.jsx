@@ -16,11 +16,9 @@ const EditProfileComponent = ({ setKeySelected }) => {
   });
 
   const handleEdit = async (data) => {
-    const res = await UserService.updateUser(user.id, data, user.access_token);
+    const res = await UserService.userApi.updateUser(user.id, data);
     console.log(res);
   };
-
-  console.log(user.gender);
 
   const { t } = useTranslation();
   return (
@@ -102,7 +100,11 @@ const EditProfileComponent = ({ setKeySelected }) => {
             {...register("birthday", {
               required: "Tên là bắt buộc",
             })}
-            defaultValue={new Date(user.birthday).toISOString().slice(0, 10)}
+            defaultValue={
+              user.birthday
+                ? new Date(user.birthday).toISOString().slice(0, 10)
+                : null
+            }
             className="w-full outline-none py-1 bg-transparent border-b-2 focus:border-pink-700 transition-all"
             placeholder={t("birthdayPlaceholder")}
             type="date"
@@ -118,17 +120,17 @@ const EditProfileComponent = ({ setKeySelected }) => {
           {t("editProfile")}
         </button> */}
           <button
-            class="group relative py-2 px-5 overflow-hidden rounded-lg hover:text-pink-600"
+            className="group relative py-2 px-5 overflow-hidden rounded-lg hover:text-pink-600"
             onClick={() => setKeySelected("accountOverview")}
           >
             {t("cancel")}
           </button>
           <button
             type="submit"
-            class="group relative py-2 px-5 overflow-hidden rounded-lg bg-white shadow"
+            className="group relative py-2 px-5 overflow-hidden rounded-lg bg-white shadow"
           >
-            <div class="absolute inset-0 w-0 bg-pink-600 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-            <span class="relative text-black group-hover:text-white">
+            <div className="absolute inset-0 w-0 bg-pink-600 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+            <span className="relative text-black group-hover:text-white">
               {t("saveProfile")}
             </span>
           </button>

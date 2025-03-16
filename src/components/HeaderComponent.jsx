@@ -62,7 +62,7 @@ const HeaderComponent = ({
   const [isLogin, setIsLogin] = useState(false);
 
   console.log(isShowClock);
-  console.log(JSON.parse(localStorage.getItem("isShowClock")))
+  console.log(JSON.parse(localStorage.getItem("isShowClock")));
 
   const handleMusic = () => {
     if (isPlaying) {
@@ -79,7 +79,7 @@ const HeaderComponent = ({
 
   const handleLogout = async () => {
     // setLoading(true);
-    await UserService.logoutUser();
+    await UserService.userApi.logoutUser();
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     // message.success("Đăng xuất thành công!");

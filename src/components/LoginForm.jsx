@@ -1,15 +1,15 @@
-import { Modal } from "antd";
+import { Button, Modal, Spin } from "antd";
 import React, { useState } from "react";
-import * as UserService from "../services/UserService";
 import jwt_decode from "jwt-decode";
 import { updateUser } from "../redux/slides/userSlice";
 import { useDispatch } from "react-redux";
 import { useTranslation } from "react-i18next";
 import { useForm } from "react-hook-form";
 import * as message from "./Message";
+import { userApi } from "../services/UserService";
 const LoginForm = ({ setIsModalOpen, setCurrentComponent }) => {
   const { t } = useTranslation();
-
+  const [isLoading, setIsLoading] = useState(false);
   const {
     register,
     handleSubmit,
@@ -21,18 +21,21 @@ const LoginForm = ({ setIsModalOpen, setCurrentComponent }) => {
   const dispatch = useDispatch();
 
   const handleGetDetailUser = async (id, access_token) => {
-    const storage = localStorage.getItem("refresh_token");
-    const refreshToken = JSON.parse(storage);
-    const res = await UserService.getDetailsUser(id, access_token);
-    dispatch(
-      updateUser({ ...res?.data, access_token: access_token, refreshToken })
-    );
+    const storage = localStorage.getItem("refresh_token") || "";
+    const refreshToken = storage;
+    try {
+      const res = await userApi.getDetailsUser(id, access_token);
+      dispatch(
+        updateUser({ ...res?.data, access_token: access_token, refreshToken })
+      );
+    } catch (error) {}
   };
 
   const handleSignIn = async (data) => {
-    const res = await UserService.loginUser(data);
-    if (res?.status === "OK") {
-      message.success("Đăng nhập thành công!");
+    try {
+      setIsLoading(true);
+      const res = await userApi.loginUser(data);
+      console.log(res);
       setIsModalOpen(false);
       localStorage.setItem("access_token", JSON.stringify(res?.access_token));
       localStorage.setItem("refresh_token", JSON.stringify(res?.refresh_token));
@@ -40,13 +43,14 @@ const LoginForm = ({ setIsModalOpen, setCurrentComponent }) => {
       if (res?.access_token) {
         const decoded = jwt_decode(res?.access_token);
         if (decoded.id) {
-          handleGetDetailUser(decoded.id, res?.access_token);
+          await handleGetDetailUser(decoded.id, res?.access_token);
+          message.success("Đăng nhập thành công!");
         }
       }
-    } else {
-      setMessageError(data?.message);
+    } catch (error) {
+    } finally {
+      setIsLoading(false);
     }
-    console.log(res);
   };
 
   return (
@@ -74,7 +78,7 @@ const LoginForm = ({ setIsModalOpen, setCurrentComponent }) => {
                 })}
                 className="w-full outline-none py-1 bg-transparent border-b-2 focus:border-pink-700 transition-all"
                 placeholder={t("password")}
-                type="text"
+                type="password"
               />
             </div>
             <div>
@@ -91,15 +95,17 @@ const LoginForm = ({ setIsModalOpen, setCurrentComponent }) => {
             </div>
 
             <div className="mt-5 flex flex-col gap-3">
-              <button
-                type="submit"
-                class="group relative py-2 px-5 overflow-hidden rounded-lg bg-white shadow"
-              >
-                <div class="absolute inset-0 w-0 bg-pink-600 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-                <span class="relative text-black group-hover:text-white">
-                  {t("loginTitle")}
-                </span>
-              </button>
+              <Spin spinning={isLoading}>
+                <button
+                  type="submit"
+                  class="group relative py-2 px-5 overflow-hidden rounded-lg bg-white shadow w-full"
+                >
+                  <div class="absolute inset-0 w-0 bg-pink-600 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+                  <span class="relative text-black group-hover:text-white">
+                    {t("loginTitle")}
+                  </span>
+                </button>
+              </Spin>
 
               <h1 className="text-white cursor-pointer">
                 {t("doNotHaveAnAccount")}

@@ -67,9 +67,10 @@ const GreetingComponent = () => {
   };
 
   const fetchRandomQuotes = async () => {
-    const result = await axios.get("https://api.quotable.io/random");
-    console.log(result);
-    setQuotes(`"${result.data.content}"`);
+    const { data } = await axios.get(
+      "https://quotes-api-self.vercel.app/quote"
+    );
+    setQuotes(`"${data.quote}"`);
   };
 
   useEffect(() => {

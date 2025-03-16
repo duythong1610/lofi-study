@@ -1,6 +1,6 @@
 import { Modal } from "antd";
 import React, { useState } from "react";
-import * as UserService from "../services/UserService";
+import { userApi } from "../services/UserService";
 import jwt_decode from "jwt-decode";
 import { updateUser } from "../redux/slides/userSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -22,7 +22,7 @@ const SignUpForm = ({ setCurrentComponent }) => {
   console.log(errors);
 
   const handleSignUp = async (data) => {
-    const res = await UserService.signupUser(data);
+    const res = await userApi.signupUser(data);
     if (res?.status === "OK") {
       message.success("Đăng ký thành công!");
       setIsLogin(true);

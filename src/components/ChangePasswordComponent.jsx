@@ -18,7 +18,7 @@ const ChangePasswordComponent = ({ setKeySelected }) => {
   });
 
   const handleChangePassword = async (data) => {
-    const res = await UserService.changePassword({
+    const res = await UserService.userApi.changePassword({
       ...data,
       userId: user.id,
     });
@@ -76,17 +76,17 @@ const ChangePasswordComponent = ({ setKeySelected }) => {
 
         <div className="text-end mt-5">
           <button
-            class="group relative py-2 px-5 overflow-hidden rounded-lg hover:text-pink-600"
+            className="group relative py-2 px-5 overflow-hidden rounded-lg hover:text-pink-600"
             onClick={() => setKeySelected("accountOverview")}
           >
             {t("cancel")}
           </button>
           <button
             type="submit"
-            class="group relative py-2 px-5 overflow-hidden rounded-lg bg-white shadow"
+            className="group relative py-2 px-5 overflow-hidden rounded-lg bg-white shadow"
           >
-            <div class="absolute inset-0 w-0 bg-pink-600 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
-            <span class="relative text-black group-hover:text-white">
+            <div className="absolute inset-0 w-0 bg-pink-600 transition-all duration-[250ms] ease-out group-hover:w-full"></div>
+            <span className="relative text-black group-hover:text-white">
               {t("updatePasswordTitle")}
             </span>
           </button>
